@@ -1,0 +1,1603 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calcul Béton Armé — Oussama Sahlal</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bl:#185FA5;--blL:#E6F1FB;--blM:#378ADD;--blD:#0C447C;--blDD:#042C53;
+  --gB:#EAF3DE;--gT:#27500A;--gBr:#C0DD97;
+  --rB:#FCEBEB;--rT:#791F1F;--rBr:#F7C1C1;
+  --aB:#FAEEDA;--aT:#633806;--aBr:#FAC775;
+  --iB:#E6F1FB;--iT:#0C447C;--iBr:#B5D4F4;
+  --bg:#F2F5FA;--sf:#FFF;--sf2:#EEF2F8;--bd:#D8DEF0;
+  --tx:#18213A;--tx2:#576070;--tx3:#8A93AA;
+  --r4:4px;--r8:8px;--r12:12px;--r16:16px;--r24:24px
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh}
+/* NAV */
+.nav{background:linear-gradient(120deg,#185FA5 0%,#0C447C 55%,#042C53 100%);
+  padding:0 1.5rem;box-shadow:0 4px 20px rgba(24,95,165,.3);position:sticky;top:0;z-index:100}
+.nav-in{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.nav-brand{display:flex;align-items:center;gap:10px;padding:.9rem 0}
+.nav-av{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.3);
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff}
+.nav-t{font-size:15px;font-weight:600;color:#fff}
+.nav-s{font-size:10px;color:rgba(255,255,255,.6);margin-top:1px}
+.nav-tabs{display:flex;gap:2px;flex-wrap:wrap}
+.ntab{padding:8px 12px;border:none;background:none;color:rgba(255,255,255,.6);
+  font-size:11px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;
+  transition:all .15s;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.ntab:hover{color:#fff;background:rgba(255,255,255,.08)}
+.ntab.active{color:#fff;border-bottom-color:#fff}
+.nav-tag{background:rgba(255,255,255,.12);border:.5px solid rgba(255,255,255,.25);
+  border-radius:99px;padding:3px 10px;font-size:10px;color:rgba(255,255,255,.8);white-space:nowrap}
+/* PAGES */
+.page{display:none;max-width:1100px;margin:0 auto;padding:1.5rem 1.5rem 4rem}
+.page.active{display:block}
+/* CARDS */
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r16);
+  padding:1rem 1.2rem;box-shadow:0 1px 4px rgba(24,95,165,.07)}
+.ctitle{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--tx2);margin-bottom:.75rem;display:flex;align-items:center;gap:5px}
+.cdot{width:5px;height:5px;border-radius:50%;background:var(--blM);flex-shrink:0}
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.gc2{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;margin-bottom:1.1rem}
+.gc3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.1rem;margin-bottom:1.1rem}
+.mb1{margin-bottom:1rem}
+/* FIELDS */
+.fld{display:flex;flex-direction:column;gap:3px}
+.fld label{font-size:11px;color:var(--tx2);font-weight:500}
+.fld input,.fld select{padding:6px 9px;border:1px solid var(--bd);border-radius:var(--r8);
+  background:var(--sf);color:var(--tx);font-size:13px;font-family:'DM Mono',monospace;width:100%;
+  transition:border-color .15s,box-shadow .15s}
+.fld input:focus,.fld select:focus{outline:none;border-color:var(--blM);box-shadow:0 0 0 3px rgba(55,138,221,.12)}
+/* FISS */
+.frow{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:.75rem}
+.fo{border:1.5px solid var(--bd);border-radius:var(--r12);padding:.6rem .7rem;cursor:pointer;
+  text-align:center;transition:all .15s;background:var(--sf);user-select:none}
+.fo:hover{border-color:var(--blM);background:#EBF4FD;transform:translateY(-1px)}
+.fo.sel{border-color:var(--bl);background:var(--blL);box-shadow:0 0 0 3px rgba(24,95,165,.1)}
+.fo .fn{font-size:16px;font-weight:700;color:var(--bl);margin-bottom:2px;font-family:'DM Mono',monospace}
+.fo .fl{font-size:9px;color:var(--blD);line-height:1.3}
+/* ZONE */
+.zrow{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:.5rem}
+.zo{border:1.5px solid var(--bd);border-radius:var(--r12);padding:.55rem .8rem;cursor:pointer;transition:all .15s;background:var(--sf)}
+.zo:hover{border-color:var(--blM);background:#EBF4FD}
+.zo.sel{border-color:var(--bl);background:var(--blL)}
+.zo .zt{font-size:12px;font-weight:600;color:var(--blD)}
+.zo .zs{font-size:10px;color:var(--tx2);margin-top:1px}
+/* BTN */
+.btn{width:100%;padding:10px;background:var(--bl);color:#fff;border:none;border-radius:var(--r12);
+  font-size:13px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;
+  transition:all .15s;box-shadow:0 4px 12px rgba(24,95,165,.28)}
+.btn:hover{background:var(--blD);transform:translateY(-1px)}
+.btn:active{transform:scale(.99)}
+/* METRICS */
+.mets{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:8px;margin-bottom:1rem}
+.met{background:var(--sf2);border-radius:var(--r8);padding:.65rem .85rem;border:1px solid var(--bd)}
+.met .ml{font-size:10px;color:var(--tx2);margin-bottom:3px;font-weight:500}
+.met .mv{font-size:17px;font-weight:600;color:var(--tx);font-family:'DM Mono',monospace}
+.met .mu{font-size:10px;color:var(--tx3)}
+.met.hi{background:var(--blL);border-color:#B5D4F4}
+.met.hi .mv{color:var(--bl)}
+/* ROWS */
+.rr{display:flex;justify-content:space-between;align-items:center;padding:6px 0;
+  border-bottom:1px solid #EEF2F8;font-size:12px}
+.rr:last-child{border-bottom:none}
+.rl{color:var(--tx2);font-style:italic}
+.rv{font-weight:500;font-family:'DM Mono',monospace;font-size:12px;text-align:right;flex-shrink:0;margin-left:8px}
+/* BADGES */
+.badge{display:inline-flex;padding:2px 7px;border-radius:99px;font-size:10px;font-weight:700}
+.bok{background:var(--gB);color:var(--gT)}
+.bnok{background:var(--rB);color:var(--rT)}
+.binf{background:var(--iB);color:var(--iT)}
+.bwrn{background:var(--aB);color:var(--aT)}
+/* ALERTS */
+.alrt{padding:.6rem .85rem;border-radius:var(--r8);font-size:12px;margin-bottom:.7rem;border:1px solid;font-weight:500}
+.alrt.ok{background:var(--gB);color:var(--gT);border-color:var(--gBr)}
+.alrt.warn{background:var(--rB);color:var(--rT);border-color:var(--rBr)}
+.alrt.inf{background:var(--iB);color:var(--iT);border-color:var(--iBr)}
+/* RECAP */
+.recap{border:2px solid var(--blM);border-radius:var(--r16);padding:1rem 1.2rem;
+  background:linear-gradient(135deg,#EBF4FD 0%,#F4F8FD 100%);margin-bottom:1rem}
+.rgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1rem;margin-top:.5rem}
+.rib{font-size:10px;color:var(--tx2);margin-bottom:3px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.rv2{font-size:24px;font-weight:700;color:var(--bl);font-family:'DM Mono',monospace}
+.rs{font-size:10px;color:var(--tx2);margin-top:2px;line-height:1.4}
+.rbs{display:flex;gap:5px;flex-wrap:wrap;margin-top:.75rem}
+.sep{height:1px;background:var(--bd);margin:.75rem 0}
+.schema{background:var(--sf2);border-radius:var(--r12);padding:.7rem;margin-bottom:.85rem}
+.foot{text-align:center;padding:.9rem 0 .3rem;border-top:1px solid var(--bd);margin-top:1.5rem}
+.foot p{font-size:11px;color:var(--tx3)}
+@media(max-width:700px){
+  .gc2,.gc3,.g2{grid-template-columns:1fr}
+  .g3,.g4{grid-template-columns:1fr 1fr}
+  .nav-tabs{display:none}
+  .page{padding:1rem .9rem 3rem}
+}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-in">
+    <div class="nav-brand">
+      <div class="nav-av">OS</div>
+      <div><div class="nav-t">Oussama Sahlal</div><div class="nav-s">Calcul Béton Armé — BAEL 91 rév. 99</div></div>
+    </div>
+    <div class="nav-tabs">
+      <button class="ntab active" onclick="showP('rect',this)">Poutre Rect.</button>
+      <button class="ntab" onclick="showP('tsec',this)">Section T / I</button>
+      <button class="ntab" onclick="showP('compose',this)">Flexion Composée</button>
+      <button class="ntab" onclick="showP('poteau',this)">Poteau</button>
+      <button class="ntab" onclick="showP('dalle',this)">Dalle</button>
+      <button class="ntab" onclick="showP('semelle',this)">Semelle</button>
+    </div>
+    <div class="nav-tag">ELU · ELS</div>
+  </div>
+</nav>
+
+<!-- ═══════ PAGE POUTRE RECT ═══════ -->
+<div id="page-rect" class="page active">
+  <div style="margin-bottom:1.1rem">
+    <h2 style="font-size:17px;font-weight:600">Poutre rectangulaire — Flexion simple</h2>
+    <p style="font-size:12px;color:var(--tx2);margin-top:3px">Organigramme BAEL complet : ELU (pivots A/B/C) + ELS + Effort tranchant</p>
+  </div>
+  <div class="gc2">
+    <div class="card mb1">
+      <div class="ctitle"><span class="cdot"></span>Dimensions</div>
+      <div class="schema">
+        <svg id="svgR" viewBox="0 0 480 106" style="width:100%;height:106px;display:block">
+          <rect x="148" y="8" width="184" height="78" rx="2" fill="#E6F1FB" stroke="#185FA5" stroke-width="1.5"/>
+          <line x1="148" y1="24" x2="332" y2="24" stroke="#185FA5" stroke-width=".8" stroke-dasharray="3,2" opacity=".4"/>
+          <line x1="148" y1="76" x2="332" y2="76" stroke="#185FA5" stroke-width=".8" stroke-dasharray="3,2" opacity=".4"/>
+          <circle cx="168" cy="78" r="5.5" fill="#185FA5"/>
+          <circle cx="192" cy="78" r="5.5" fill="#185FA5"/>
+          <circle cx="216" cy="78" r="5.5" fill="#185FA5"/>
+          <circle cx="308" cy="78" r="5.5" fill="#185FA5"/>
+          <circle cx="284" cy="78" r="5.5" fill="#185FA5"/>
+          <circle cx="168" cy="19" r="3.5" fill="#0C447C" opacity=".5"/>
+          <circle cx="308" cy="19" r="3.5" fill="#0C447C" opacity=".5"/>
+          <rect x="158" y="15" width="164" height="67" rx="1" fill="none" stroke="#185FA5" stroke-width=".8" stroke-dasharray="2,2" opacity=".3"/>
+          <text id="svgRt" x="240" y="50" text-anchor="middle" font-size="10.5" fill="#0C447C" font-family="DM Mono,monospace">b=30 cm · h=50 cm · d=45 cm</text>
+          <line x1="148" y1="96" x2="332" y2="96" stroke="#888" stroke-width=".9"/><line x1="148" y1="92" x2="148" y2="100" stroke="#888" stroke-width=".9"/><line x1="332" y1="92" x2="332" y2="100" stroke="#888" stroke-width=".9"/>
+          <text x="240" y="105" text-anchor="middle" font-size="9.5" fill="#888" font-family="DM Sans,sans-serif">b</text>
+          <line x1="130" y1="8" x2="130" y2="86" stroke="#888" stroke-width=".9"/><line x1="126" y1="8" x2="134" y2="8" stroke="#888" stroke-width=".9"/><line x1="126" y1="86" x2="134" y2="86" stroke="#888" stroke-width=".9"/>
+          <text x="116" y="47" text-anchor="middle" font-size="9.5" fill="#888" font-family="DM Sans,sans-serif">h</text>
+          <line x1="348" y1="24" x2="348" y2="82" stroke="#0C447C" stroke-width=".9" opacity=".6"/><line x1="344" y1="24" x2="352" y2="24" stroke="#0C447C" stroke-width=".9" opacity=".6"/><line x1="344" y1="82" x2="352" y2="82" stroke="#0C447C" stroke-width=".9" opacity=".6"/>
+          <text x="365" y="53" text-anchor="middle" font-size="9.5" fill="#0C447C" font-family="DM Sans,sans-serif" opacity=".8">d</text>
+          <line x1="362" y1="8" x2="362" y2="20" stroke="#0C447C" stroke-width=".9" opacity=".4"/>
+          <text x="376" y="16" font-size="9" fill="#0C447C" font-family="DM Sans,sans-serif" opacity=".7">d'</text>
+        </svg>
+      </div>
+      <div class="g2" style="margin-bottom:8px">
+        <div class="fld"><label>h — hauteur totale (m)</label><input type="number" id="rh" value="0.50" step="0.01" oninput="calcR()"></div>
+        <div class="fld"><label>b — largeur (m)</label><input type="number" id="rb" value="0.30" step="0.01" oninput="calcR()"></div>
+      </div>
+      <div class="g2">
+        <div class="fld"><label>d (m) <span style="color:var(--tx3);font-size:10px">= 0.9h par défaut</span></label><input type="number" id="rd" value="0.45" step="0.001" oninput="calcR()"></div>
+        <div class="fld"><label>d' (m) <span style="color:var(--tx3);font-size:10px">= 0.11d</span></label><input type="number" id="rdp" value="0.055" step="0.001" oninput="calcR()"></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:1rem">
+      <div class="card">
+        <div class="ctitle"><span class="cdot"></span>Matériaux</div>
+        <div class="g2" style="margin-bottom:8px">
+          <div class="fld"><label>fe (MPa)</label>
+            <select id="rfe" onchange="calcR()"><option value="235">235 (FeE24)</option><option value="400">400 (FeE40)</option><option value="500" selected>500 (HA)</option></select>
+          </div>
+          <div class="fld"><label>fc28 (MPa)</label>
+            <select id="rfc" onchange="calcR()"><option value="20">20</option><option value="25" selected>25</option><option value="30">30</option><option value="35">35</option><option value="40">40</option><option value="50">50</option></select>
+          </div>
+        </div>
+        <div class="fld"><label>θ — durée d'application</label>
+          <select id="rth" onchange="calcR()"><option value="1.0" selected>θ=1.0 (t>24h)</option><option value="0.9">θ=0.9 (1h≤t≤24h)</option><option value="0.85">θ=0.85 (t&lt;1h)</option></select>
+        </div>
+      </div>
+      <div class="card">
+        <div class="ctitle"><span class="cdot"></span>Sollicitations</div>
+        <div class="g3">
+          <div class="fld"><label>Mu (kN·m)</label><input type="number" id="rMu" value="120" step="1" oninput="calcR()"></div>
+          <div class="fld"><label>Mser (kN·m)</label><input type="number" id="rMs" value="85" step="1" oninput="calcR()"></div>
+          <div class="fld"><label>Vu (kN)</label><input type="number" id="rVu" value="80" step="1" oninput="calcR()"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="gc2">
+    <div class="card">
+      <div class="ctitle"><span class="cdot"></span>Type de fissuration</div>
+      <div class="frow">
+        <div class="fo sel" data-rv="1" onclick="rSF(1)"><div class="fn">FPP</div><div class="fl">Peu Préjudiciable<br>σ̄st = fe</div></div>
+        <div class="fo" data-rv="2" onclick="rSF(2)"><div class="fn">FP</div><div class="fl">Préjudiciable<br>σ̄st = min(⅔fe, max(fe/2,110√1.6fc28))</div></div>
+        <div class="fo" data-rv="3" onclick="rSF(3)"><div class="fn">FTP</div><div class="fl">Très Préjudiciable<br>σ̄st = min(½fe, 90√1.6fc28)</div></div>
+      </div>
+      <div style="font-size:10px;background:var(--sf2);border-radius:var(--r8);padding:.5rem .75rem;color:var(--tx2);line-height:1.6">
+        <b>σ̄bc = 0.6·fc28</b> (toutes fissurations) — Coefficient homogénéisation <b>n = 15</b>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ctitle"><span class="cdot"></span>Ferraillage ELU + Transversal</div>
+      <div class="zrow">
+        <div class="zo sel" data-rz="1" onclick="rSZ(1)"><div class="zt">Armatures simples</div><div class="zs">µ &lt; µl</div></div>
+        <div class="zo" data-rz="2" onclick="rSZ(2)"><div class="zt">Armatures doubles</div><div class="zs">µ ≥ µl — As'≠0</div></div>
+      </div>
+      <div class="sep"></div>
+      <div class="ctitle" style="margin-bottom:.6rem"><span class="cdot"></span>Armatures transversales</div>
+      <div class="g4">
+        <div class="fld"><label>n brins</label><input type="number" id="rnbr" value="2" min="1" oninput="calcR()"></div>
+        <div class="fld"><label>Øt (mm)</label><input type="number" id="rphit" value="8" oninput="calcR()"></div>
+        <div class="fld"><label>St (cm)</label><input type="number" id="rSt" value="15" oninput="calcR()"></div>
+        <div class="fld"><label>α incl. (°)</label><input type="number" id="ralpha" value="90" oninput="calcR()"></div>
+      </div>
+      <div class="sep"></div>
+      <div class="ctitle" style="margin-bottom:.6rem"><span class="cdot"></span>Coefficient k (effort tranchant)</div>
+      <div class="fld">
+        <select id="rk" onchange="calcR()">
+          <option value="0">k=0 — Reprise de bétonnage ou FTP</option>
+          <option value="1" selected>k=1 — Flexion simple sans reprise / reprise indent. ≥5mm</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <button class="btn" onclick="calcR()">Calculer</button>
+  <div id="resR" style="margin-top:1.2rem"></div>
+  <div class="foot"><p>Oussama Sahlal · Section Rectangulaire · BAEL 91 rév. 99</p></div>
+</div>
+
+<!-- ═══════ PAGE T / I ═══════ -->
+<div id="page-tsec" class="page">
+  <div style="margin-bottom:1.1rem">
+    <h2 style="font-size:17px;font-weight:600">Section en T / I — Flexion simple ELU + ELS</h2>
+    <p style="font-size:12px;color:var(--tx2);margin-top:3px">Organigramme BAEL — vérification AN dans table ou nervure</p>
+  </div>
+  <div class="gc2">
+    <div class="card mb1">
+      <div class="ctitle"><span class="cdot"></span>Type & dimensions</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:.85rem">
+        <div class="zo sel" data-tt="T" onclick="tST('T')"><div class="zt">Section en T</div><div class="zs">nervure + table sup.</div></div>
+        <div class="zo" data-tt="I" onclick="tST('I')"><div class="zt">Section en I</div><div class="zs">nervure + 2 tables</div></div>
+      </div>
+      <div class="schema" id="tschema">
+        <svg viewBox="0 0 480 130" style="width:100%;height:130px;display:block">
+          <rect x="70" y="8" width="340" height="28" rx="2" fill="#E6F1FB" stroke="#185FA5" stroke-width="1.5"/>
+          <rect x="205" y="36" width="70" height="86" rx="2" fill="#E6F1FB" stroke="#185FA5" stroke-width="1.5"/>
+          <circle cx="222" cy="114" r="5" fill="#185FA5"/><circle cx="244" cy="114" r="5" fill="#185FA5"/><circle cx="258" cy="114" r="5" fill="#185FA5"/>
+          <circle cx="222" cy="14" r="3" fill="#0C447C" opacity=".5"/><circle cx="258" cy="14" r="3" fill="#0C447C" opacity=".5"/>
+          <text x="240" y="26" text-anchor="middle" font-size="9.5" fill="#0C447C" font-family="DM Sans,sans-serif">b (table)</text>
+          <text x="240" y="82" text-anchor="middle" font-size="9.5" fill="#0C447C" font-family="DM Sans,sans-serif">bw (âme)</text>
+          <line x1="70" y1="3" x2="410" y2="3" stroke="#888" stroke-width=".8"/><line x1="70" y1="0" x2="70" y2="6" stroke="#888" stroke-width=".8"/><line x1="410" y1="0" x2="410" y2="6" stroke="#888" stroke-width=".8"/>
+          <text x="240" y="2" text-anchor="middle" font-size="9" fill="#888" font-family="DM Sans,sans-serif" dy="-1">b</text>
+          <line x1="52" y1="8" x2="52" y2="122" stroke="#888" stroke-width=".8"/><line x1="48" y1="8" x2="56" y2="8" stroke="#888" stroke-width=".8"/><line x1="48" y1="122" x2="56" y2="122" stroke="#888" stroke-width=".8"/>
+          <text x="40" y="65" text-anchor="middle" font-size="9" fill="#888" font-family="DM Sans,sans-serif">h</text>
+          <line x1="428" y1="8" x2="428" y2="36" stroke="#888" stroke-width=".8" stroke-dasharray="2,2" opacity=".7"/><text x="438" y="25" font-size="9" fill="#888" font-family="DM Sans,sans-serif">hf</text>
+        </svg>
+      </div>
+      <div class="g2" style="margin-bottom:8px">
+        <div class="fld"><label>b — table sup. (m)</label><input type="number" id="tb0" value="1.00" step="0.01" oninput="calcT()"></div>
+        <div class="fld"><label>bw — âme (m)</label><input type="number" id="tbw" value="0.25" step="0.01" oninput="calcT()"></div>
+      </div>
+      <div class="g2" style="margin-bottom:8px">
+        <div class="fld"><label>h — total (m)</label><input type="number" id="th" value="0.60" step="0.01" oninput="calcT()"></div>
+        <div class="fld"><label>hf — table sup. (m)</label><input type="number" id="thf" value="0.12" step="0.01" oninput="calcT()"></div>
+      </div>
+      <div class="g2" id="tIrow" style="display:none;margin-bottom:8px">
+        <div class="fld"><label>bi — table inf. (m)</label><input type="number" id="tbi" value="0.60" step="0.01" oninput="calcT()"></div>
+        <div class="fld"><label>hfi — table inf. (m)</label><input type="number" id="thfi" value="0.10" step="0.01" oninput="calcT()"></div>
+      </div>
+      <div class="g2">
+        <div class="fld"><label>d (m)</label><input type="number" id="td" value="0.54" step="0.001" oninput="calcT()"></div>
+        <div class="fld"><label>d' (m)</label><input type="number" id="tdp" value="0.066" step="0.001" oninput="calcT()"></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:1rem">
+      <div class="card">
+        <div class="ctitle"><span class="cdot"></span>Matériaux & sollicitations</div>
+        <div class="g2" style="margin-bottom:8px">
+          <div class="fld"><label>fe (MPa)</label>
+            <select id="tfe" onchange="calcT()"><option value="235">235</option><option value="400">400</option><option value="500" selected>500</option></select>
+          </div>
+          <div class="fld"><label>fc28 (MPa)</label>
+            <select id="tfc" onchange="calcT()"><option value="20">20</option><option value="25" selected>25</option><option value="30">30</option><option value="35">35</option><option value="40">40</option><option value="50">50</option></select>
+          </div>
+        </div>
+        <div class="g2" style="margin-bottom:8px">
+          <div class="fld"><label>θ</label>
+            <select id="tth" onchange="calcT()"><option value="1.0" selected>1.0</option><option value="0.9">0.9</option><option value="0.85">0.85</option></select>
+          </div>
+          <div class="fld"><label>Vu (kN)</label><input type="number" id="tVu" value="180" oninput="calcT()"></div>
+        </div>
+        <div class="g2">
+          <div class="fld"><label>Mu (kN·m)</label><input type="number" id="tMu" value="350" oninput="calcT()"></div>
+          <div class="fld"><label>Mser (kN·m)</label><input type="number" id="tMs" value="240" oninput="calcT()"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="ctitle"><span class="cdot"></span>Fissuration + Transversal</div>
+        <div class="frow">
+          <div class="fo sel" data-tv="1" onclick="tSF(1)"><div class="fn" style="font-size:14px">FPP</div></div>
+          <div class="fo" data-tv="2" onclick="tSF(2)"><div class="fn" style="font-size:14px">FP</div></div>
+          <div class="fo" data-tv="3" onclick="tSF(3)"><div class="fn" style="font-size:14px">FTP</div></div>
+        </div>
+        <div class="g3">
+          <div class="fld"><label>n brins</label><input type="number" id="tnbr" value="2" min="1" oninput="calcT()"></div>
+          <div class="fld"><label>Øt (mm)</label><input type="number" id="tphit" value="8" oninput="calcT()"></div>
+          <div class="fld"><label>St (cm)</label><input type="number" id="tSt" value="20" oninput="calcT()"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="btn" onclick="calcT()">Calculer</button>
+  <div id="resT" style="margin-top:1.2rem"></div>
+  <div class="foot"><p>Oussama Sahlal · Section T/I · BAEL 91 rév. 99</p></div>
+</div>
+
+<!-- ═══════ PAGE FLEXION COMPOSÉE ═══════ -->
+<div id="page-compose" class="page">
+  <div style="margin-bottom:1.1rem">
+    <h2 style="font-size:17px;font-weight:600">Flexion composée — Section rectangulaire</h2>
+    <p style="font-size:12px;color:var(--tx2);margin-top:3px">Organigramme BAEL Chap.VI — SPC/SPT/SET/SEC + majoration moment</p>
+  </div>
+  <div class="gc2">
+    <div class="card">
+      <div class="ctitle"><span class="cdot"></span>Dimensions & matériaux</div>
+      <div class="g2" style="margin-bottom:8px">
+        <div class="fld"><label>h (m)</label><input type="number" id="ch" value="0.50" step="0.01" oninput="calcC()"></div>
+        <div class="fld"><label>b (m)</label><input type="number" id="cb" value="0.30" step="0.01" oninput="calcC()"></div>
+      </div>
+      <div class="g2" style="margin-bottom:8px">
+        <div class="fld"><label>d=0.9h (m)</label><input type="number" id="cd" value="0.45" step="0.001" oninput="calcC()"></div>
+        <div class="fld"><label>d'=0.11d (m)</label><input type="number" id="cdp" value="0.05" step="0.001" oninput="calcC()"></div>
+      </div>
+      <div class="g2">
+        <div class="fld"><label>fe (MPa)</label>
+          <select id="cfe" onchange="calcC()"><option value="235">235</option><option value="400">400</option><option value="500" selected>500</option></select>
+        </div>
+        <div class="fld"><label>fc28 (MPa)</label>
+          <select id="cfc" onchange="calcC()"><option value="20">20</option><option value="25" selected>25</option><option value="30">30</option><option value="35">35</option><option value="40">40</option><option value="50">50</option></select>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ctitle"><span class="cdot"></span>Sollicitations & excentricité</div>
+      <div class="g2" style="margin-bottom:8px">
+        <div class="fld"><label>Nu ELU (kN) — + = compr.</label><input type="number" id="cNu" value="500" oninput="calcC()"></div>
+        <div class="fld"><label>Mu ELU (kN·m)</label><input type="number" id="cMu" value="120" oninput="calcC()"></div>
+      </div>
+      <div class="g2" style="margin-bottom:8px">
+        <div class="fld"><label>Nser (kN)</label><input type="number" id="cNs" value="350" oninput="calcC()"></div>
+        <div class="fld"><label>Mser (kN·m)</label><input type="number" id="cMs" value="84" oninput="calcC()"></div>
+      </div>
+      <div class="g2" style="margin-bottom:8px">
+        <div class="fld"><label>l0 — long. libre (m)</label><input type="number" id="cl0" value="3.50" step="0.1" oninput="calcC()"></div>
+        <div class="fld"><label>θ</label>
+          <select id="cth" onchange="calcC()"><option value="1.0" selected>1.0</option><option value="0.9">0.9</option><option value="0.85">0.85</option></select>
+        </div>
+      </div>
+      <div class="fld" style="margin-bottom:8px"><label>Conditions aux appuis</label>
+        <select id="ck" onchange="calcC()">
+          <option value="0.5">k=0.5 — Encastré-Encastré</option>
+          <option value="0.7" selected>k=0.7 — Encastré-Articulé</option>
+          <option value="1.0">k=1.0 — Articulé-Articulé</option>
+        </select>
+      </div>
+      <div class="fld"><label>Type d'élément</label>
+        <select id="celem" onchange="calcC()">
+          <option value="poteau" selected>Poteau (avec majoration)</option>
+          <option value="poutre">Poutre (sans majoration e2)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <button class="btn" onclick="calcC()">Calculer</button>
+  <div id="resC" style="margin-top:1.2rem"></div>
+  <div class="foot"><p>Oussama Sahlal · Flexion Composée · BAEL 91 rév. 99</p></div>
+</div>
+
+<!-- ═══════ PAGE POTEAU ═══════ -->
+<div id="page-poteau" class="page">
+  <div style="margin-bottom:1.1rem">
+    <h2 style="font-size:17px;font-weight:600">Poteau — Compression simple</h2>
+    <p style="font-size:12px;color:var(--tx2);margin-top:3px">Organigramme BAEL Chap.III — rectangulaire & circulaire</p>
+  </div>
+  <div class="gc2">
+    <div class="card">
+      <div class="ctitle"><span class="cdot"></span>Forme & dimensions</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:.85rem">
+        <div class="zo sel" data-ps="rect" onclick="pSS('rect')"><div class="zt">Rectangulaire</div><div class="zs">B=a·b, Br=(a-2cm)(b-2cm)</div></div>
+        <div class="zo" data-ps="circ" onclick="pSS('circ')"><div class="zt">Circulaire</div><div class="zs">B=πd²/4, Br=π(d-2cm)²/4</div></div>
+      </div>
+      <div class="g2" id="pRectDims" style="margin-bottom:8px">
+        <div class="fld"><label>a — côté (m)</label><input type="number" id="pa" value="0.40" step="0.01" oninput="calcP()"></div>
+        <div class="fld"><label>b — côté (m)</label><input type="number" id="pbb" value="0.40" step="0.01" oninput="calcP()"></div>
+      </div>
+      <div class="g2" id="pCircDims" style="display:none;margin-bottom:8px">
+        <div class="fld"><label>d — diamètre (m)</label><input type="number" id="pd" value="0.40" step="0.01" oninput="calcP()"></div>
+      </div>
+      <div class="g2">
+        <div class="fld"><label>l0 — long. libre (m)</label><input type="number" id="pl0" value="3.50" step="0.1" oninput="calcP()"></div>
+        <div class="fld"><label>Conditions aux appuis</label>
+          <select id="pk" onchange="calcP()">
+            <option value="0.5">k=0.5 — Encastré-Encastré</option>
+            <option value="0.7" selected>k=0.7 — Encastré-Articulé</option>
+            <option value="1.0">k=1.0 — Articulé-Articulé</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ctitle"><span class="cdot"></span>Matériaux & charges</div>
+      <div class="g2" style="margin-bottom:8px">
+        <div class="fld"><label>fe (MPa)</label>
+          <select id="pfe" onchange="calcP()"><option value="235">235</option><option value="400">400</option><option value="500" selected>500</option></select>
+        </div>
+        <div class="fld"><label>fc28 (MPa)</label>
+          <select id="pfc" onchange="calcP()"><option value="20">20</option><option value="25" selected>25</option><option value="30">30</option><option value="35">35</option><option value="40">40</option><option value="50">50</option></select>
+        </div>
+      </div>
+      <div class="g2" style="margin-bottom:8px">
+        <div class="fld"><label>G (kN)</label><input type="number" id="pG" value="600" oninput="calcP()"></div>
+        <div class="fld"><label>Q (kN)</label><input type="number" id="pQ" value="200" oninput="calcP()"></div>
+      </div>
+      <div class="fld" style="margin-bottom:8px"><label>Correction pour âge du béton</label>
+        <select id="pcorr" onchange="calcP()">
+          <option value="1" selected>Aucune correction</option>
+          <option value="1.1">Nu/2 avant 90j → α/1.1</option>
+          <option value="1.2">Nu/2 avant 28j → α/1.2</option>
+        </select>
+      </div>
+      <div class="fld"><label>Øl min (mm) — pour Øt max</label><input type="number" id="pphil" value="16" oninput="calcP()"></div>
+    </div>
+  </div>
+  <button class="btn" onclick="calcP()">Calculer</button>
+  <div id="resP" style="margin-top:1.2rem"></div>
+  <div class="foot"><p>Oussama Sahlal · Poteau · BAEL 91 rév. 99</p></div>
+</div>
+
+<!-- ═══════ PAGE DALLE ═══════ -->
+<div id="page-dalle" class="page">
+  <div style="margin-bottom:1.1rem">
+    <h2 style="font-size:17px;font-weight:600">Dalle en béton armé</h2>
+    <p style="font-size:12px;color:var(--tx2);margin-top:3px">Organigramme BAEL Chap.VII — 1 sens & 2 sens, coefficients µx µy, As min</p>
+  </div>
+  <div class="gc2">
+    <div class="card">
+      <div class="ctitle"><span class="cdot"></span>Géométrie & type</div>
+      <div class="g2" style="margin-bottom:8px">
+        <div class="fld"><label>h — épaisseur (m)</label><input type="number" id="dah" value="0.18" step="0.01" oninput="calcD()"></div>
+        <div class="fld"><label>d = h-3cm (m)</label><input type="number" id="dad" value="0.15" step="0.001" oninput="calcD()"></div>
+      </div>
+      <div class="g2" style="margin-bottom:8px">
+        <div class="fld"><label>Lx — petite portée (m)</label><input type="number" id="daLx" value="4.00" step="0.1" oninput="calcD()"></div>
+        <div class="fld"><label>Ly — grande portée (m)</label><input type="number" id="daLy" value="6.00" step="0.1" oninput="calcD()"></div>
+      </div>
+      <div class="fld" style="margin-bottom:8px"><label>Type de dalle (déterminé par α=Lx/Ly)</label>
+        <select id="datype" onchange="calcD()">
+          <option value="auto" selected>Automatique (α&lt;0.4 → 1 sens)</option>
+          <option value="1way">Forcer 1 sens</option>
+          <option value="2way">Forcer 2 sens</option>
+        </select>
+      </div>
+      <div class="fld"><label>Continuité</label>
+        <select id="dacont" onchange="calcD()">
+          <option value="iso">Dalle isolée</option>
+          <option value="cont" selected>Dalle continue</option>
+        </select>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ctitle"><span class="cdot"></span>Matériaux & charges</div>
+      <div class="g2" style="margin-bottom:8px">
+        <div class="fld"><label>fe (MPa)</label>
+          <select id="dafe" onchange="calcD()"><option value="235">235</option><option value="400">400</option><option value="500" selected>500</option></select>
+        </div>
+        <div class="fld"><label>fc28 (MPa)</label>
+          <select id="dafc" onchange="calcD()"><option value="20">20</option><option value="25" selected>25</option><option value="30">30</option><option value="35">35</option><option value="40">40</option></select>
+        </div>
+      </div>
+      <div class="g2" style="margin-bottom:8px">
+        <div class="fld"><label>g (kN/m²)</label><input type="number" id="dag" value="5.0" step="0.1" oninput="calcD()"></div>
+        <div class="fld"><label>q (kN/m²)</label><input type="number" id="daq" value="3.5" step="0.1" oninput="calcD()"></div>
+      </div>
+      <div class="frow">
+        <div class="fo sel" data-dv="1" onclick="dSF(1)"><div class="fn" style="font-size:14px">FPP</div></div>
+        <div class="fo" data-dv="2" onclick="dSF(2)"><div class="fn" style="font-size:14px">FP</div></div>
+        <div class="fo" data-dv="3" onclick="dSF(3)"><div class="fn" style="font-size:14px">FTP</div></div>
+      </div>
+    </div>
+  </div>
+  <button class="btn" onclick="calcD()">Calculer</button>
+  <div id="resD" style="margin-top:1.2rem"></div>
+  <div class="foot"><p>Oussama Sahlal · Dalle · BAEL 91 rév. 99</p></div>
+</div>
+
+<!-- ═══════ PAGE SEMELLE ═══════ -->
+<div id="page-semelle" class="page">
+  <div style="margin-bottom:1.1rem">
+    <h2 style="font-size:17px;font-weight:600">Semelle — Méthode des bielles</h2>
+    <p style="font-size:12px;color:var(--tx2);margin-top:3px">Organigramme BAEL Chap.VIII — semelle isolée & continue + vérification poinçonnement</p>
+  </div>
+  <div class="gc2">
+    <div class="card">
+      <div class="ctitle"><span class="cdot"></span>Type & poteau</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:.85rem">
+        <div class="zo sel" data-st="iso" onclick="sST('iso')"><div class="zt">Semelle isolée</div><div class="zs">A/B = a/b</div></div>
+        <div class="zo" data-st="cont" onclick="sST('cont')"><div class="zt">Semelle continue</div><div class="zs">A = 1 m</div></div>
+      </div>
+      <div class="g2" style="margin-bottom:8px">
+        <div class="fld"><label>a — côté poteau (m)</label><input type="number" id="sa" value="0.40" step="0.01" oninput="calcS()"></div>
+        <div class="fld"><label>b — côté poteau (m)</label><input type="number" id="sb" value="0.40" step="0.01" oninput="calcS()"></div>
+      </div>
+      <div class="g2" style="margin-bottom:8px">
+        <div class="fld"><label>fe (MPa)</label>
+          <select id="sfe" onchange="calcS()"><option value="235">235</option><option value="400">400</option><option value="500" selected>500</option></select>
+        </div>
+        <div class="fld"><label>fc28 (MPa)</label>
+          <select id="sfc" onchange="calcS()"><option value="20">20</option><option value="25" selected>25</option><option value="30">30</option><option value="35">35</option><option value="40">40</option></select>
+        </div>
+      </div>
+      <div class="fld"><label>Type d'acier</label>
+        <select id="sacier" onchange="calcS()">
+          <option value="HA" selected>HA — ψs=1.5</option>
+          <option value="RL">RL — ψs=1.0</option>
+        </select>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ctitle"><span class="cdot"></span>Charges & sol</div>
+      <div class="g2" style="margin-bottom:8px">
+        <div class="fld"><label>G (kN)</label><input type="number" id="sG" value="600" oninput="calcS()"></div>
+        <div class="fld"><label>Q (kN)</label><input type="number" id="sQ" value="200" oninput="calcS()"></div>
+      </div>
+      <div class="g2" style="margin-bottom:8px">
+        <div class="fld"><label>σsol admissible (kPa)</label><input type="number" id="ssig" value="200" oninput="calcS()"></div>
+        <div class="fld"><label>Øl max (mm)</label><input type="number" id="sphil" value="16" oninput="calcS()"></div>
+      </div>
+      <div class="frow">
+        <div class="fo sel" data-sv="1" onclick="sSF(1)"><div class="fn" style="font-size:14px">FPP</div><div class="fl">As = As calc.</div></div>
+        <div class="fo" data-sv="2" onclick="sSF(2)"><div class="fn" style="font-size:14px">FP</div><div class="fl">As = 1.1 Ascalc.</div></div>
+        <div class="fo" data-sv="3" onclick="sSF(3)"><div class="fn" style="font-size:14px">FTP</div><div class="fl">As = 1.5 Ascalc.</div></div>
+      </div>
+    </div>
+  </div>
+  <button class="btn" onclick="calcS()">Calculer</button>
+  <div id="resS" style="margin-top:1.2rem"></div>
+  <div class="foot"><p>Oussama Sahlal · Semelle · BAEL 91 rév. 99</p></div>
+</div>
+
+<script>
+/* ─── NAV ─── */
+function showP(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  el.classList.add('active');
+}
+/* ─── HELPERS ─── */
+const gv=id=>{const e=document.getElementById(id);return e?parseFloat(e.value)||0:0};
+const gsel=id=>{const e=document.getElementById(id);return e?parseFloat(e.value)||0:0};
+const f2=v=>(!isFinite(v)||isNaN(v))?'—':v.toFixed(2);
+const f3=v=>(!isFinite(v)||isNaN(v))?'—':v.toFixed(3);
+const f4=v=>(!isFinite(v)||isNaN(v))?'—':v.toFixed(4);
+
+/* σst admissible BAEL ELS — organigramme PDF p.17
+   FPP : σ̄st = fe
+   FP  : σ̄st = min( 2/3·fe  ;  max(fe/2 ; 110√(η·ft28)) )   η=1.6 HA, 1 RL
+   FTP : σ̄st = min( 1/2·fe  ;  90√(η·ft28) )
+   ft28 = 0.6 + 0.06·fc28  ← résistance traction béton, PAS fc28 directement
+*/
+function sigSt(fe,fc28,fiss,eta=1.6){
+  const ft28=0.6+0.06*fc28;
+  if(fiss===1) return fe;
+  if(fiss===2) return Math.min((2/3)*fe, Math.max(fe/2, 110*Math.sqrt(eta*ft28)));
+  return Math.min(fe/2, 90*Math.sqrt(eta*ft28));
+}
+
+/* Propositions de barres HA — retourne tableau [{n,phi,as_cm2}] */
+const DIAMS=[6,8,10,12,14,16,20,25,32,40]; // mm HA disponibles
+function proposeBarres(As_cm2_needed){
+  const props=[];
+  for(const phi of DIAMS){
+    const as1=Math.PI*phi*phi/4/100; // cm² par barre
+    const n=Math.ceil(As_cm2_needed/as1);
+    if(n>=2&&n<=20) props.push({n,phi,as:n*as1});
+  }
+  // trier par n croissant, garder les 6 meilleures (n entre 2 et 14)
+  return props.filter(p=>p.n<=14).slice(0,6);
+}
+
+/* Schéma SVG d'une poutre */
+function schemaPoutre(b_cm,h_cm,d_cm,dp_cm,As_cm2,Asp_cm2,Vu_kN,phi_t_mm,St_cm){
+  const barre_tens=proposeBarres(As_cm2)[0]||{n:4,phi:16,as:As_cm2};
+  const barre_comp=Asp_cm2>0?(proposeBarres(Asp_cm2)[0]||{n:2,phi:12,as:Asp_cm2}):{n:2,phi:10,as:0};
+  // Dessin SVG
+  const W=540,H=220;
+  const lm=50,rm=30,tm=25,bm=35;
+  const sw=W-lm-rm,sh=H-tm-bm;
+  const scX=x=>lm+x/b_cm*sw,scY=y=>tm+y/h_cm*sh;
+  // Béton
+  let svg=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:${H}px;display:block">`;
+  // Hachures béton
+  svg+=`<defs><pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#B5D4F4" stroke-width="1.5"/></pattern></defs>`;
+  svg+=`<rect x="${lm}" y="${tm}" width="${sw}" height="${sh}" fill="url(#hatch)" stroke="#185FA5" stroke-width="2" rx="2"/>`;
+  // Enrobage lignes
+  const env_t=dp_cm/h_cm*sh+5,env_b=(h_cm-d_cm)/h_cm*sh+5;
+  svg+=`<line x1="${lm+5}" y1="${tm+env_b}" x2="${lm+sw-5}" y2="${tm+env_b}" stroke="#185FA5" stroke-width=".7" stroke-dasharray="3,2" opacity=".4"/>`;
+  svg+=`<line x1="${lm+5}" y1="${tm+sh-env_b+5}" x2="${lm+sw-5}" y2="${tm+sh-env_b+5}" stroke="#185FA5" stroke-width=".7" stroke-dasharray="3,2" opacity=".4"/>`;
+  // Cadre étrier
+  const et=8,etx=lm+et,ety=tm+et,etw=sw-2*et,eth=sh-2*et;
+  svg+=`<rect x="${etx}" y="${ety}" width="${etw}" height="${eth}" fill="none" stroke="#0C447C" stroke-width="1.8" rx="2"/>`;
+  // Armatures comprimées (haut)
+  const nc=barre_comp.n,phc=barre_comp.phi;
+  const yc=tm+env_b;
+  const spacec=(sw-2*et-10)/(nc-1||1);
+  for(let i=0;i<nc;i++){
+    const xb=etx+5+i*(nc>1?spacec:0);
+    svg+=`<circle cx="${xb}" cy="${yc}" r="${Math.min(6,phc/3.5)}" fill="#0C447C" opacity=".6"/>`;
+  }
+  // Armatures tendues (bas)
+  const nt=barre_tens.n,pht=barre_tens.phi;
+  const yt=tm+sh-env_b+5;
+  const spacet=(sw-2*et-10)/(nt-1||1);
+  for(let i=0;i<nt;i++){
+    const xb=etx+5+i*(nt>1?spacet:0);
+    svg+=`<circle cx="${xb}" cy="${yt}" r="${Math.min(8,pht/3)}" fill="#185FA5"/>`;
+  }
+  // Cotations
+  svg+=`<line x1="${lm-12}" y1="${tm}" x2="${lm-12}" y2="${tm+sh}" stroke="#888" stroke-width=".8"/>`;
+  svg+=`<line x1="${lm-16}" y1="${tm}" x2="${lm-8}" y2="${tm}" stroke="#888" stroke-width=".8"/>`;
+  svg+=`<line x1="${lm-16}" y1="${tm+sh}" x2="${lm-8}" y2="${tm+sh}" stroke="#888" stroke-width=".8"/>`;
+  svg+=`<text x="${lm-22}" y="${tm+sh/2}" text-anchor="middle" font-size="11" fill="#555" font-family="DM Sans,sans-serif" transform="rotate(-90,${lm-22},${tm+sh/2})">h=${h_cm} cm</text>`;
+  svg+=`<line x1="${lm}" y1="${tm+sh+14}" x2="${lm+sw}" y2="${tm+sh+14}" stroke="#888" stroke-width=".8"/>`;
+  svg+=`<line x1="${lm}" y1="${tm+sh+10}" x2="${lm}" y2="${tm+sh+18}" stroke="#888" stroke-width=".8"/>`;
+  svg+=`<line x1="${lm+sw}" y1="${tm+sh+10}" x2="${lm+sw}" y2="${tm+sh+18}" stroke="#888" stroke-width=".8"/>`;
+  svg+=`<text x="${lm+sw/2}" y="${tm+sh+28}" text-anchor="middle" font-size="11" fill="#555" font-family="DM Sans,sans-serif">b=${b_cm} cm</text>`;
+  // Légende
+  svg+=`<text x="${lm+sw/2}" y="${tm+sh/2-8}" text-anchor="middle" font-size="11" fill="#0C447C" font-family="DM Mono,monospace">${nc} HA ${phc} (haut)</text>`;
+  svg+=`<text x="${lm+sw/2}" y="${tm+sh/2+12}" text-anchor="middle" font-size="11" fill="#185FA5" font-family="DM Mono,monospace">${nt} HA ${pht} (bas)</text>`;
+  svg+=`<text x="${lm+sw/2}" y="${tm+sh-4}" text-anchor="middle" font-size="10" fill="#888" font-family="DM Sans,sans-serif">Ø${phi_t_mm} c/${St_cm} cm</text>`;
+  svg+=`</svg>`;
+  return svg;
+}
+/* fbu BAEL */
+function fbu(fc28,theta){return 0.85*fc28/(theta*1.5);}
+
+/* αl = 7/(7+2εl) — formule exacte du PDF */
+function alphaL(fe){
+  const E=2.1e5, epsl=fe/(1.15*E)*1000; // εl en ‰
+  return 7/(7+2*epsl);
+}
+function muL(fe){const al=alphaL(fe);return 0.8*al*(1-0.4*al);}
+
+/* résolution cubique Newton */
+function cubic(a,b,c,d,x0=0.5){
+  let x=x0;
+  for(let i=0;i<300;i++){
+    const fx=a*x*x*x+b*x*x+c*x+d;
+    const fp=3*a*x*x+2*b*x+c;
+    if(Math.abs(fp)<1e-14) break;
+    const xn=x-fx/fp;
+    if(Math.abs(xn-x)<1e-11){x=xn;break;}
+    x=xn;
+  }
+  return x;
+}
+
+/* ═══ POUTRE RECTANGULAIRE ═══ */
+let rFiss=1,rZone=1;
+function rSF(v){rFiss=v;document.querySelectorAll('.fo[data-rv]').forEach(e=>e.classList.toggle('sel',+e.dataset.rv===v));calcR();}
+function rSZ(v){rZone=v;document.querySelectorAll('.zo[data-rz]').forEach(e=>e.classList.toggle('sel',+e.dataset.rz===v));calcR();}
+
+function calcR(){
+  try{
+    const h=gv('rh'),b=gv('rb'),d=gv('rd'),dp=gv('rdp');
+    const fe=gsel('rfe'),fc28=gsel('rfc'),theta=gsel('rth');
+    const Mu=gv('rMu')*1e-3,Mser=gv('rMs')*1e-3,Vu=gv('rVu')*1e-3; // MN, MN·m
+    const nbr=gv('rnbr'),phit=gv('rphit'),St=gv('rSt');
+    const alpha_inc=gv('ralpha')*Math.PI/180;
+    const k_val=gsel('rk');
+
+    const svg=document.getElementById('svgRt');
+    if(svg) svg.textContent=`b=${(b*100).toFixed(0)} cm · h=${(h*100).toFixed(0)} cm · d=${(d*100).toFixed(1)} cm`;
+
+    const fbu_v=fbu(fc28,theta);         // MPa
+    const ft28=0.6+0.06*fc28;            // MPa
+    const fsu=fe/1.15;                   // MPa
+    const E=2.1e5;
+    const epsl_ppm=fe/(1.15*E)*1000;     // ‰
+    const al=7/(7+2*epsl_ppm);           // αl exact PDF
+    const mul=0.8*al*(1-0.4*al);         // µl
+    const mu_lim53=5/3*mul;              // seuil redimensionnement
+
+    const mu=Mu/(b*d*d*fbu_v);           // µ adimensionnel
+
+    // ── Organigramme exact PDF p.16 ──
+    // Branche 1 : µ > 5/3·µl  → Redimensionner
+    // Branche 2 : µl ≤ µ ≤ 5/3·µl  → Zone B armatures doubles
+    // Branche 3 : µ < µl  → Zone A :
+    //    Sous-zone A1 : µ < 0.1042  → équation quartique (pivot C), racine ∈ [0, 1/6]
+    //                                   α → β = 5α²(3-8α)/(3(1-α)²)
+    //    Sous-zone A2 : 0.1042 ≤ µ < 0.1859 → α = 1-0.9366√(1-2µ), β = (16α-1)/15
+    //    Sous-zone A3 : 0.1859 ≤ µ < µl     → α = 1-0.9366√(1-2µ), β = (16α-1)/15
+    let alpha,beta_v,AS=0,ASp=0,zone_txt='',need_redim=false;
+    if(mu>mu_lim53){
+      need_redim=true;
+    } else if(mu>=mul){
+      // Zone B — µl ≤ µ ≤ 5/3·µl — armatures doubles
+      // α = 1.25(1-√(1-2µl))  [PDF formule Zone B]
+      alpha=1.25*(1-Math.sqrt(Math.max(0,1-2*mul)));
+      beta_v=0.8*alpha;
+      ASp=(mu-mul)*b*d*d*fbu_v/((d-dp)*fsu);
+      AS=0.8*al*b*d*fbu_v/fsu+ASp;
+      zone_txt='B — armatures doubles (µ≥µl)';
+    } else {
+      // Zone A — µ < µl
+      if(mu<0.1042){
+        // Pivot C — équation quartique : 15α⁴-60α³+(20-4µ)α²+8µα-4µ=0
+        // Racine ∈ [0, 1/6] — Newton
+        const poly=(x)=>15*x**4-60*x**3+(20-4*mu)*x**2+8*mu*x-4*mu;
+        const dpoly=(x)=>60*x**3-180*x**2+2*(20-4*mu)*x+8*mu;
+        let x=0.05;
+        for(let i=0;i<500;i++){const fp=dpoly(x);if(Math.abs(fp)<1e-15)break;const dx=poly(x)/fp;x-=dx;if(Math.abs(dx)<1e-12)break;}
+        alpha=Math.max(0,Math.min(1/6,x));
+        beta_v=5*alpha*alpha*(3-8*alpha)/(3*(1-alpha)*(1-alpha));
+        zone_txt='A — pivot C — µ<0.1042 (équation quartique, β=5α²(3-8α)/3(1-α)²)';
+      } else if(mu<0.1859){
+        // 0.1042 ≤ µ < 0.1859 — pivot B intermédiaire
+        alpha=1-0.9366*Math.sqrt(Math.max(0,1-2*mu));
+        beta_v=(16*alpha-1)/15;
+        zone_txt='A — pivot B — 0.1042 ≤ µ < 0.1859 (α=1-0.9366√(1-2µ), β=(16α-1)/15)';
+      } else {
+        // 0.1859 ≤ µ < µl — pivot B zone haute
+        alpha=1-0.9366*Math.sqrt(Math.max(0,1-2*mu));
+        beta_v=(16*alpha-1)/15;
+        zone_txt='A — pivot B — 0.1859 ≤ µ < µl (α=1-0.9366√(1-2µ), β=(16α-1)/15)';
+      }
+      AS=beta_v*b*d*fbu_v/fsu;
+      ASp=0;
+    }
+    const AS_cm2=AS*1e4, ASp_cm2=ASp*1e4;
+
+    // As min = max(b·h/1000 ; 0.23·b·d·ft28/fe)
+    const Amin=Math.max(b*h/1000,0.23*b*d*ft28/fe)*1e4;
+    const cond_frag=AS_cm2>=Amin;
+
+    // ─── ELS (organigramme p.17-18 du PDF) ───
+    const sst=sigSt(fe,fc28,rFiss);   // MPa
+    const sbc=0.6*fc28;               // MPa
+    const ft28v=0.6+0.06*fc28;
+    const delta=dp/d;
+    const mu1=Mser/(b*d*d*sst);
+    const alphaS=15*sbc/(15*sbc+sst);
+    const muS=alphaS*alphaS*(1-alphaS/3)/(30*(1-alphaS));
+
+    let As_els=0,Asp_els=0,els_type='';
+    if(mu1<=muS){
+      // α1³-3α1²-90µ1·α1+90µ1=0 — racine ∈[0,1]
+      const a1=cubic(1,-3,-90*mu1,90*mu1,0.5);
+      As_els=a1*a1/(30*(1-a1))*b*d;
+      Asp_els=0;
+      els_type='Armatures simples ELS';
+    } else {
+      Asp_els=(mu1-muS)*(1-alphaS)/((alphaS-delta)*(1-delta))*b*d;
+      As_els=(30*(1-alphaS)*(mu1-muS)+alphaS*alphaS*(1-delta))/(30*(1-alphaS)*(1-delta))*b*d;
+      els_type='Armatures doubles ELS';
+    }
+    const As_els_cm2=As_els*1e4,Asp_els_cm2=Asp_els*1e4;
+
+    // Vérification ELS avec As_fin
+    const As_fin=Math.max(AS_cm2,As_els_cm2,Amin)/1e4;
+    const Ac=b/2,Bc=15*As_fin,Cc=-15*As_fin*d;
+    let y=(-Bc+Math.sqrt(Math.max(0,Bc*Bc-4*Ac*Cc)))/(2*Ac);
+    y=Math.max(0.001,y);
+    const I=b*y*y*y/3+15*As_fin*(d-y)*(d-y);
+    const K=Mser/I;
+    const sbc_calc=K*y,sst_calc=15*K*(d-y);
+    const ok_bc=sbc_calc<=sbc,ok_st=sst_calc<=sst;
+
+    // ─── EFFORT TRANCHANT (organigramme p.23 du PDF) ───
+    // UNITÉS : Vu en MN, b en m, d en m, tau en MPa
+    const tau_u=Vu/(b*d);              // MPa ← Vu[MN]/(b[m]·d[m]) = MN/m² = MPa ✓
+    // τ̄u selon fissuration :
+    // FPP → min(0.20·fc28/γb ; 5 MPa)
+    // FP ou FTP → min(0.15·fc28/γb ; 4 MPa)
+    const tau_adm=rFiss===1
+      ? Math.min(0.20*fc28/1.5, 5)
+      : Math.min(0.15*fc28/1.5, 4);
+    const tau_ok=tau_u<=tau_adm;
+
+    // Øt ≤ min(Øl_max/3, h/35, b̄/10)
+    const phil_min=12; // mm supposé (minimum longitudinal)
+    const phit_max=Math.min(phil_min, h*1000/35, b*1000/10);
+    const phit_ok=phit<=phit_max;
+
+    // At = n × π·Øt²/4  [cm²]
+    const At=nbr*Math.PI*phit*phit/4/100; // cm²
+
+    // St = 0.9·At[cm²]·fsu[MPa]·(sinα+cosα) / (γs · b[m]·100 · (τu[MPa] - 0.3·k·ft28[MPa]))
+    // → St en cm  (car b·100 = b en cm)
+    const denom_tau=tau_u-0.3*k_val*ft28;
+    let St_calc_cm=0;
+    if(denom_tau>0){
+      // At[cm²]·fsu[MPa] / (b[cm]·(τu-0.3kft28)[MPa]) → cm²·MPa / (cm·MPa) = cm ✓
+      St_calc_cm=0.9*At*fsu*(Math.sin(alpha_inc)+Math.cos(alpha_inc))/(b*100*denom_tau);
+    }
+    // Condition non-fragilité : St ≤ At[cm²]·fe[MPa] / (0.4·b[m]·100·1[MPa]) = cm
+    const St_nonfrag=At*fe/(0.4*b*100);
+    // Espacement max
+    const St_max_cm=Math.min(0.9*d*100,40);
+    const St_choisi=gv('rSt');
+    const St_ok=St_choisi<=St_max_cm;
+
+    const As_fin_cm2=Math.max(AS_cm2,As_els_cm2,Amin);
+    const nomF=['','FPP — Peu Préjudiciable','FP — Préjudiciable','FTP — Très Préjudiciable'][rFiss];
+
+    // ─── Propositions de barres ───
+    const props_long=proposeBarres(As_fin_cm2);
+    const props_comp=Math.max(ASp_cm2,Asp_els_cm2)>0.5?proposeBarres(Math.max(ASp_cm2,Asp_els_cm2)):[];
+    const barres_html=props_long.map(p=>`
+      <div style="background:${Math.abs(p.as-As_fin_cm2)<0.5?'#EAF3DE':'var(--sf2)'};border:1px solid ${Math.abs(p.as-As_fin_cm2)<0.5?'#C0DD97':'var(--bd)'};border-radius:var(--r8);padding:6px 10px;display:flex;justify-content:space-between;align-items:center;font-size:12px">
+        <span style="font-family:'DM Mono',monospace;font-weight:600;color:#185FA5">${p.n} HA ${p.phi}</span>
+        <span style="color:var(--tx2)">${f2(p.as)} cm²</span>
+        <span style="font-size:10px;color:${p.as>=As_fin_cm2?'#27500A':'#791F1F'}">${p.as>=As_fin_cm2?'✓ OK':'✗ insuf.'}</span>
+      </div>`).join('');
+    const barres_comp_html=props_comp.map(p=>`
+      <div style="background:var(--sf2);border:1px solid var(--bd);border-radius:var(--r8);padding:6px 10px;display:flex;justify-content:space-between;align-items:center;font-size:12px">
+        <span style="font-family:'DM Mono',monospace;font-weight:600;color:#0C447C">${p.n} HA ${p.phi}</span>
+        <span style="color:var(--tx2)">${f2(p.as)} cm²</span>
+      </div>`).join('');
+
+    // ─── Schéma poutre ───
+    const schema_svg=schemaPoutre(b*100,h*100,d*100,dp*100,As_fin_cm2,Math.max(ASp_cm2,Asp_els_cm2),gv('rVu'),phit,St_choisi);
+
+    document.getElementById('resR').innerHTML=`
+    <div class="mets">
+      <div class="met"><div class="ml">fbu (MPa)</div><div class="mv">${f2(fbu_v)}</div></div>
+      <div class="met"><div class="ml">αl = 7/(7+2εl)</div><div class="mv">${f4(al)}</div></div>
+      <div class="met"><div class="ml">µl = 0.8αl(1-0.4αl)</div><div class="mv">${f4(mul)}</div></div>
+      <div class="met"><div class="ml">µ calculé</div><div class="mv">${f4(mu)}</div></div>
+      <div class="met"><div class="ml">As ELU</div><div class="mv">${f2(AS_cm2)}<span class="mu">cm²</span></div></div>
+      <div class="met"><div class="ml">As ELS</div><div class="mv">${f2(As_els_cm2)}<span class="mu">cm²</span></div></div>
+      <div class="met hi"><div class="ml">As finale</div><div class="mv">${f2(As_fin_cm2)}<span class="mu">cm²</span></div></div>
+    </div>
+
+    <div class="gc2">
+      <div class="card mb1">
+        <div class="ctitle"><span class="cdot"></span>ELU — Organigramme BAEL</div>
+        ${need_redim?'<div class="alrt warn">µ > 5/3·µl = '+f4(mu_lim53)+' — Redimensionner la section !</div>':''}
+        ${mu>=mul&&!need_redim?'<div class="alrt inf">Zone B — armatures doubles (µ≥µl)</div>':''}
+        <div class="rr"><span class="rl">fbu = 0.85·fc28/(θ·γb)</span><span class="rv">${f2(fbu_v)} MPa</span></div>
+        <div class="rr"><span class="rl">fsu = fe/γs</span><span class="rv">${f2(fsu)} MPa</span></div>
+        <div class="rr"><span class="rl">εl = fe/(γs·E) [‰]</span><span class="rv">${f4(epsl_ppm)} ‰</span></div>
+        <div class="rr"><span class="rl">αl = 7/(7+2εl)</span><span class="rv">${f4(al)}</span></div>
+        <div class="rr"><span class="rl">µl = 0.8αl(1-0.4αl)</span><span class="rv">${f4(mul)}</span></div>
+        <div class="rr"><span class="rl">5/3·µl (seuil redim.)</span><span class="rv">${f4(mu_lim53)}</span></div>
+        <div class="rr"><span class="rl">µ = Mu/(b·d²·fbu)</span><span class="rv">${f4(mu)} <span class="badge ${mu>mu_lim53?'bnok':mu>=mul?'bwrn':'bok'}">${mu>mu_lim53?'µ>5/3µl Redim!':mu>=mul?'µl≤µ Zone B':'µ<µl Zone A'}</span></span></div>
+        ${!need_redim?`<div class="rr"><span class="rl">Sous-zone</span><span class="rv" style="font-size:10px;text-align:right;max-width:240px">${zone_txt}</span></div>`:''}
+        ${!need_redim?`<div class="rr"><span class="rl">α (axe neutre ELU)</span><span class="rv">${f4(alpha)}</span></div>`:''}
+        ${!need_redim?`<div class="rr"><span class="rl">β</span><span class="rv">${f4(beta_v)}</span></div>`:''}
+        <div class="rr"><span class="rl">Asu tendues</span><span class="rv">${f2(AS_cm2)} cm²</span></div>
+        ${ASp>0?`<div class="rr"><span class="rl">Asu' comprimées</span><span class="rv">${f2(ASp_cm2)} cm²</span></div>`:''}
+        <div class="rr"><span class="rl">Amin = max(bh/1000 ; 0.23·b·d·ft28/fe)</span><span class="rv">${f2(Amin)} cm² <span class="badge ${cond_frag?'bok':'bnok'}">${cond_frag?'OK':'NON'}</span></span></div>
+      </div>
+
+      <div class="card mb1">
+        <div class="ctitle"><span class="cdot"></span>ELS — Organigramme BAEL (p.17-18)</div>
+        ${ok_bc&&ok_st?'<div class="alrt ok">E.L.S vérifiée</div>':'<div class="alrt warn">E.L.S non vérifiée — dimensionner à l\'ELS</div>'}
+        <div class="rr"><span class="rl">Fissuration</span><span class="rv"><span class="badge binf">${nomF}</span></span></div>
+        <div class="rr"><span class="rl">σ̄bc = 0.6·fc28</span><span class="rv">${f2(sbc)} MPa</span></div>
+        <div class="rr"><span class="rl">σ̄st = ${rFiss===1?'fe':rFiss===2?'min(⅔fe, max(fe/2, 110√(1.6ft28)))':'min(fe/2, 90√(1.6ft28))'}</span><span class="rv"><b>${f2(sst)} MPa</b></span></div>
+        <div class="rr"><span class="rl">ft28 = 0.6+0.06fc28</span><span class="rv">${f2(ft28)} MPa</span></div>
+        <div class="rr"><span class="rl">µ1 = Mser/(b·d²·σ̄st)</span><span class="rv">${f4(mu1)}</span></div>
+        <div class="rr"><span class="rl">αs = 15σ̄bc/(15σ̄bc+σ̄st)</span><span class="rv">${f4(alphaS)}</span></div>
+        <div class="rr"><span class="rl">µs = αs²(1-αs/3)/(30(1-αs))</span><span class="rv">${f4(muS)}</span></div>
+        <div class="rr"><span class="rl">Type ELS</span><span class="rv"><span class="badge binf">${els_type}</span></span></div>
+        <div class="rr"><span class="rl">As ELS tendues</span><span class="rv">${f2(As_els_cm2)} cm²</span></div>
+        ${Asp_els>0?`<div class="rr"><span class="rl">As' ELS comprimées</span><span class="rv">${f2(Asp_els_cm2)} cm²</span></div>`:''}
+        <div class="rr"><span class="rl">y — axe neutre (vérif.)</span><span class="rv">${f3(y*100)} cm</span></div>
+        <div class="rr"><span class="rl">σbc = K·y</span><span class="rv">${f2(sbc_calc)} / ${f2(sbc)} MPa <span class="badge ${ok_bc?'bok':'bnok'}">${ok_bc?'OK':'NON'}</span></span></div>
+        <div class="rr"><span class="rl">σst = 15·K·(d-y)</span><span class="rv">${f2(sst_calc)} / ${f2(sst)} MPa <span class="badge ${ok_st?'bok':'bnok'}">${ok_st?'OK':'NON'}</span></span></div>
+      </div>
+    </div>
+
+    <div class="card mb1">
+      <div class="ctitle"><span class="cdot"></span>Effort tranchant — Organigramme BAEL (p.23)</div>
+      ${!tau_ok?'<div class="alrt warn">τu > τ̄u — Redimensionner la section !</div>':'<div class="alrt ok">Cisaillement vérifié</div>'}
+      <div class="gc2" style="margin-bottom:0">
+        <div>
+          <div class="rr"><span class="rl">Vu</span><span class="rv">${gv('rVu')} kN</span></div>
+          <div class="rr"><span class="rl">τu = Vu[MN]/(b[m]·d[m])</span><span class="rv">${f3(tau_u)} MPa</span></div>
+          <div class="rr"><span class="rl">τ̄u (${rFiss===1?'FPP: min(0.20fc28/γb,5)':'FP/FTP: min(0.15fc28/γb,4)'})</span><span class="rv">${f2(tau_adm)} MPa <span class="badge ${tau_ok?'bok':'bnok'}">${tau_ok?'OK':'NON'}</span></span></div>
+          <div class="rr"><span class="rl">Øt ≤ min(Øl/3 ; h/35 ; b/10)</span><span class="rv">≤ ${f2(phit_max)} mm <span class="badge ${phit_ok?'bok':'bnok'}">${phit_ok?'OK':'NON'}</span></span></div>
+          <div class="rr"><span class="rl">At = ${nbr|0}×π·Ø²/4</span><span class="rv">${f2(At)} cm²</span></div>
+        </div>
+        <div>
+          <div class="rr"><span class="rl">k = ${k_val} (${k_val==0?'reprise/FTP':'flexion simple'})</span><span class="rv"></span></div>
+          <div class="rr"><span class="rl">St = 0.9·At·fsu·(sinα+cosα)/(b·100·(τu−0.3k·ft28))</span><span class="rv">${denom_tau>0?f2(St_calc_cm)+' cm':'τu−0.3k·ft28 ≤ 0'}</span></div>
+          <div class="rr"><span class="rl">St non-fragilité ≤ At·fe/(0.4·b·100)</span><span class="rv">${f2(St_nonfrag)} cm</span></div>
+          <div class="rr"><span class="rl">St max = min(0.9d×100 ; 40 cm)</span><span class="rv">${f2(St_max_cm)} cm</span></div>
+          <div class="rr"><span class="rl">St choisi</span><span class="rv">${St_choisi} cm <span class="badge ${St_ok?'bok':'bnok'}">${St_ok?'OK':'NON'}</span></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb1">
+      <div class="ctitle"><span class="cdot"></span>Propositions de barres — As = ${f2(As_fin_cm2)} cm²</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:7px;margin-bottom:.5rem">${barres_html}</div>
+      ${props_comp.length>0?`
+      <div class="sep"></div>
+      <div class="ctitle" style="margin-bottom:.5rem"><span class="cdot"></span>As' comprimées — ${f2(Math.max(ASp_cm2,Asp_els_cm2))} cm²</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:7px">${barres_comp_html}</div>`:''}
+    </div>
+
+    <div class="card mb1">
+      <div class="ctitle"><span class="cdot"></span>Schéma de la section transversale</div>
+      <div class="schema">${schema_svg}</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:.5rem;font-size:11px;color:var(--tx2)">
+        <div>● bleu foncé = As' comprimées (${props_comp.length>0?props_comp[0].n+' HA '+props_comp[0].phi:'—'})</div>
+        <div>● bleu = As tendues (${props_long.length>0?props_long[0].n+' HA '+props_long[0].phi:'—'})</div>
+        <div>□ cadre = Ø${phit}mm / ${St_choisi} cm</div>
+      </div>
+    </div>
+
+    <div class="recap">
+      <div class="ctitle" style="margin-bottom:.4rem"><span class="cdot"></span>Récapitulatif</div>
+      <div class="rgrid">
+        <div><div class="rib">As longitudinales</div><div class="rv2">${f2(As_fin_cm2)} cm²</div>
+          <div class="rs">→ ${props_long.length>0?props_long[0].n+' HA '+props_long[0].phi+' ('+f2(props_long[0].as)+' cm²)':'—'}</div>
+          <div class="rs">max(ELU=${f2(AS_cm2)}, ELS=${f2(As_els_cm2)}, Amin=${f2(Amin)})</div></div>
+        <div><div class="rib">As' comprimées</div><div class="rv2">${f2(Math.max(ASp_cm2,Asp_els_cm2))} cm²</div>
+          <div class="rs">${props_comp.length>0?'→ '+props_comp[0].n+' HA '+props_comp[0].phi:'Armatures simples'}</div></div>
+        <div><div class="rib">At transversales</div><div class="rv2">${f2(At)} cm²</div>
+          <div class="rs">${nbr|0}×Ø${phit} — St choisi ${St_choisi} cm / max ${f2(St_max_cm)} cm</div></div>
+      </div>
+      <div class="rbs">
+        <span class="badge ${mu<mu_lim53?'bok':'bnok'}">ELU ${mu<mu_lim53?'OK':'Redim.'}</span>
+        <span class="badge ${ok_bc&&ok_st?'bok':'bnok'}">ELS ${ok_bc&&ok_st?'OK':'NON'}</span>
+        <span class="badge ${tau_ok?'bok':'bnok'}">Cisaillement ${tau_ok?'OK':'NON'}</span>
+        <span class="badge ${cond_frag?'bok':'bnok'}">Non-fragilité ${cond_frag?'OK':'NON'}</span>
+        <span class="badge ${St_ok?'bok':'bnok'}">St ${St_ok?'OK':'NON'}</span>
+        <span class="badge ${phit_ok?'bok':'bnok'}">Øt ${phit_ok?'OK':'NON'}</span>
+      </div>
+    </div>`;
+  }catch(e){document.getElementById('resR').innerHTML=`<div class="alrt warn">Erreur: ${e.message}</div>`;}
+}
+
+/* ═══ SECTION T/I ═══ */
+let tFiss=1,tType='T';
+function tSF(v){tFiss=v;document.querySelectorAll('.fo[data-tv]').forEach(e=>e.classList.toggle('sel',+e.dataset.tv===v));calcT();}
+function tST(v){tType=v;document.querySelectorAll('.zo[data-tt]').forEach(e=>e.classList.toggle('sel',e.dataset.tt===v));document.getElementById('tIrow').style.display=v==='I'?'grid':'none';calcT();}
+
+function calcT(){
+  try{
+    const b0=gv('tb0'),bw=gv('tbw'),h=gv('th'),hf=gv('thf'),d=gv('td'),dp=gv('tdp');
+    const bi=tType==='I'?gv('tbi'):0,hfi=tType==='I'?gv('thfi'):0;
+    const fe=gsel('tfe'),fc28=gsel('tfc'),theta=gsel('tth');
+    const Mu=gv('tMu')*1e-3,Mser=gv('tMs')*1e-3,Vu=gv('tVu')*1e-3;
+    const nbr=gv('tnbr'),phit=gv('tphit'),St=gv('tSt');
+
+    const fbu_v=fbu(fc28,theta),ft28=0.6+0.06*fc28,fsu=fe/1.15;
+    const sst=sigSt(fe,fc28,tFiss);
+
+    // M0 = b·h0·fbu·(d - h0/2)  — organigramme PDF p.19
+    const M0=b0*hf*fbu_v*(d-hf/2);
+    const inTable=Mu<=M0;
+
+    let AS=0,zone_t='';
+    if(inTable){
+      zone_t='AN dans table → section rectangulaire b×d';
+      // appliquer organigramme rect avec largeur b0
+      const mu_v=Mu/(b0*d*d*fbu_v);
+      const al=alphaL(fe),mul_v=muL(fe);
+      const alpha_v=1-0.9366*Math.sqrt(Math.max(0,1-2*mu_v));
+      const beta_v=(16*alpha_v-1)/15;
+      AS=beta_v*b0*d*fbu_v/fsu;
+    } else {
+      zone_t='AN dans nervure → calcul en T';
+      // Mu_bar = Mu - M0·(b-b0)/b   [PDF p.19]
+      const Mu_bar=Mu-M0*(b0-bw)/b0;
+      // appliquer orga rect sur bw×d avec Mu_bar
+      const mu_bar=Mu_bar/(bw*d*d*fbu_v);
+      const al=alphaL(fe),mul_v=muL(fe);
+      const alpha_bar=1-0.9366*Math.sqrt(Math.max(0,1-2*mu_bar));
+      const beta_bar=(16*alpha_bar-1)/15;
+      const As_bar=beta_bar*bw*d*fbu_v/fsu;
+      // As final = (As_bar·fsu + (b-b0)·h0·fbu)/fsu  [PDF p.19]
+      AS=(As_bar*fsu+(b0-bw)*hf*fbu_v)/fsu;
+    }
+
+    const AS_cm2=AS*1e4;
+    const Amin=Math.max(bw*h/1000,0.23*bw*d*ft28/fe)*1e4;
+
+    // Effort tranchant — barre = bw pour section T
+    const tau_u=Vu/(bw*d);
+    const tau_adm=tFiss===1?Math.min(0.20*fc28/1.5,5):Math.min(0.15*fc28/1.5,4);
+    const tau_ok=tau_u<=tau_adm;
+    const At=nbr*Math.PI*phit*phit/4/100;
+    const St_max=Math.min(0.9*d*100,40);
+    const St_ok=St<=St_max;
+
+    // ELS vérification (organigramme PDF p.20)
+    const As_fin=Math.max(AS_cm2,Amin)/1e4;
+    // f(h0) pour savoir AN dans table ou nervure
+    const fh0=b0*hf/2+15*0-15*As_fin*(d-hf); // As'=0 simplifié
+    const AN_table=fh0>=0;
+    let y=0;
+    if(AN_table){
+      const Ac=b0/2,Bc=15*As_fin,Cc=-15*As_fin*d;
+      y=(-Bc+Math.sqrt(Bc*Bc-4*Ac*Cc))/(2*Ac);
+    } else {
+      // équation pour AN dans nervure
+      const Ac2=bw,Bc2=2*hf*(b0-bw)+30*As_fin,Cc2=-(30*As_fin*d+hf*hf*(b0-bw));
+      y=(-Bc2+Math.sqrt(Bc2*Bc2-4*Ac2*Cc2))/(2*Ac2);
+    }
+    y=Math.max(0.001,y);
+    let I_els;
+    if(AN_table){
+      I_els=b0*y*y*y/3+15*As_fin*(d-y)*(d-y);
+    } else {
+      I_els=bw*y*y*y/3+(b0-bw)*hf*hf*hf/12+(b0-bw)*hf*(y-hf/2)*(y-hf/2)+15*As_fin*(d-y)*(d-y);
+    }
+    const K_els=Mser/I_els;
+    const sbc_calc=K_els*y,sst_calc=15*K_els*(d-y);
+    const ok_bc=sbc_calc<=0.6*fc28,ok_st=sst_calc<=sst;
+    const As_fin_cm2=Math.max(AS_cm2,Amin);
+
+    document.getElementById('resT').innerHTML=`
+    <div class="mets">
+      <div class="met"><div class="ml">M0 (kN·m)</div><div class="mv">${f2(M0*1e3)}</div></div>
+      <div class="met"><div class="ml">Mu (kN·m)</div><div class="mv">${gv('tMu')}</div></div>
+      <div class="met"><div class="ml">AN dans</div><div class="mv" style="font-size:12px">${inTable?'Table':'Nervure'}</div></div>
+      <div class="met"><div class="ml">As ELU</div><div class="mv">${f2(AS_cm2)}<span class="mu">cm²</span></div></div>
+      <div class="met hi"><div class="ml">As finale</div><div class="mv">${f2(As_fin_cm2)}<span class="mu">cm²</span></div></div>
+    </div>
+    <div class="gc2">
+      <div class="card mb1">
+        <div class="ctitle"><span class="cdot"></span>ELU — Section T/I</div>
+        <div class="rr"><span class="rl">M0 = b·hf·fbu·(d-hf/2)</span><span class="rv">${f2(M0*1e3)} kN·m</span></div>
+        <div class="rr"><span class="rl">Mu ≤ M0 ?</span><span class="rv"><span class="badge ${inTable?'bok':'bwrn'}">${inTable?'Oui — table':'Non — nervure'}</span></span></div>
+        <div class="rr"><span class="rl">Zone</span><span class="rv"><span class="badge binf">${zone_t}</span></span></div>
+        <div class="rr"><span class="rl">As ELU tendues</span><span class="rv">${f2(AS_cm2)} cm²</span></div>
+        <div class="rr"><span class="rl">As min (sur bw)</span><span class="rv">${f2(Amin)} cm²</span></div>
+      </div>
+      <div class="card mb1">
+        <div class="ctitle"><span class="cdot"></span>ELS — Vérification contraintes</div>
+        ${ok_bc&&ok_st?'<div class="alrt ok">E.L.S vérifiée</div>':'<div class="alrt warn">E.L.S non vérifiée</div>'}
+        <div class="rr"><span class="rl">AN dans ${AN_table?'table':'nervure'} (ELS)</span><span class="rv">y = ${f2(y*100)} cm</span></div>
+        <div class="rr"><span class="rl">σbc = K·y</span><span class="rv">${f2(sbc_calc)} / ${f2(0.6*fc28)} MPa <span class="badge ${ok_bc?'bok':'bnok'}">${ok_bc?'OK':'NON'}</span></span></div>
+        <div class="rr"><span class="rl">σst = 15K(d-y)</span><span class="rv">${f2(sst_calc)} / ${f2(sst)} MPa <span class="badge ${ok_st?'bok':'bnok'}">${ok_st?'OK':'NON'}</span></span></div>
+      </div>
+    </div>
+    <div class="card mb1">
+      <div class="ctitle"><span class="cdot"></span>Effort tranchant (b̄ = bw)</div>
+      <div class="rr"><span class="rl">τu = Vu/(bw·d)</span><span class="rv">${f3(tau_u)} MPa <span class="badge ${tau_ok?'bok':'bnok'}">${tau_ok?'≤ '+f2(tau_adm)+'  OK':'> '+f2(tau_adm)+' NON'}</span></span></div>
+      <div class="rr"><span class="rl">At = ${nbr|0}×Ø${phit|0}</span><span class="rv">${f2(At)} cm²</span></div>
+      <div class="rr"><span class="rl">St max</span><span class="rv">${f2(St_max)} cm <span class="badge ${St_ok?'bok':'bnok'}">${St_ok?'OK':'NON'}</span></span></div>
+    </div>
+    <div class="recap">
+      <div class="ctitle"><span class="cdot"></span>Récapitulatif</div>
+      <div class="rgrid">
+        <div><div class="rib">As longitudinales</div><div class="rv2">${f2(As_fin_cm2)} cm²</div></div>
+        <div><div class="rib">At transversales</div><div class="rv2">${f2(At)} cm²</div><div class="rs">${nbr|0}×Ø${phit|0} / St=${St} cm</div></div>
+      </div>
+      <div class="rbs">
+        <span class="badge ${tau_ok?'bok':'bnok'}">Cisaillement ${tau_ok?'OK':'NON'}</span>
+        <span class="badge ${ok_bc&&ok_st?'bok':'bnok'}">ELS ${ok_bc&&ok_st?'OK':'NON'}</span>
+      </div>
+    </div>`;
+  }catch(e){document.getElementById('resT').innerHTML=`<div class="alrt warn">Erreur: ${e.message}</div>`;}
+}
+
+/* ═══ FLEXION COMPOSÉE ═══ */
+function calcC(){
+  try{
+    const h=gv('ch'),b=gv('cb'),d=gv('cd'),dp=gv('cdp');
+    const fe=gsel('cfe'),fc28=gsel('cfc'),theta=gsel('cth');
+    const Nu=gv('cNu')*1e-3,Mu=gv('cMu')*1e-3; // MN
+    const Ns=gv('cNs')*1e-3,Ms=gv('cMs')*1e-3;
+    const l0=gv('cl0'),k=gsel('ck');
+    const elem=document.getElementById('celem').value;
+
+    const fbu_v=fbu(fc28,theta),ft28=0.6+0.06*fc28,fsu=fe/1.15;
+    const N0=b*h*fbu_v; // MN — force ultime béton seul
+
+    // e0 = Mu/Nu (m)
+    const e0=Math.abs(Nu)>1e-6?Math.abs(Mu)/Math.abs(Nu):999;
+
+    // Excentricité additionnelle ea = max(2cm, l0/250)
+    const ea=Math.max(0.02,l0/250);
+    const e1=e0+ea;
+
+    // Vérification élancement
+    const lf=k*l0;
+    const i_gy=Math.min(b,h)/Math.sqrt(12);
+    const lbd=lf/i_gy;
+
+    // Majoration si poteau
+    let e2=0;
+    if(Nu>=0&&elem==='poteau'){
+      const lf_sur_h=lf/h;
+      const e1_sur_h=e1/h;
+      const lim=Math.max(1.5,20*e1_sur_h);
+      if(lf_sur_h>lim){
+        // α = MG/(MG+MQ) ≈ 0.7 hypothèse, φ=2
+        const alpha_r=0.7,phi=2;
+        e2=3*lf*lf/(1e4*h)*(2+alpha_r*phi);
+      }
+    }
+    const e=Nu>=0?ea+e0+e2:e0;
+
+    // N0 = b·h·fbu
+    const limite_e=d-h/2;
+    let A1=0,A2=0,cas='';
+
+    if(Nu<0){
+      // Traction — SET ou SPC=SPT
+      if(Math.abs(e0)<=limite_e){
+        // SET — toute section tendue
+        const a=d-h/2+e0;
+        const Mua=Math.abs(Nu)*a;
+        A2=Mua/(fsu*(d-dp));
+        A1=Math.abs(Nu)/fsu-A2;
+        cas='SET — Section entièrement tendue';
+      } else {
+        // SPC=SPT — utiliser orga flexion simple
+        const a=d-h/2+e;
+        const Mua=Math.abs(Nu)*a;
+        const mu_v=Mua/(b*d*d*fbu_v);
+        const al=alphaL(fe),mul_v=muL(fe);
+        const alpha_v=mu_v<mul_v?1-0.9366*Math.sqrt(Math.max(0,1-2*mu_v)):1.25*(1-Math.sqrt(Math.max(0,1-2*mul_v)));
+        const beta_v=mu_v<mul_v?(16*alpha_v-1)/15:0.8*alpha_v;
+        const A2_bar=beta_v*b*d*fbu_v/fsu;
+        A2=A2_bar;
+        A1=A2_bar-Math.abs(Nu)/fsu;
+        cas='SPC=SPT — Section partiellement comprimée (traction)';
+      }
+    } else {
+      // Compression
+      const M2=(Nu-N0)*(h/2-dp);
+      const M3=Nu*(h/2-dp)-(0.337*h-0.81*dp)*N0;
+      if(Mu<=M2&&Mu>=M3){
+        // SEC — section entièrement comprimée
+        const psi_v=1;
+        A2=(Nu-psi_v*N0)/fsu;
+        A1=0;
+        cas='SEC — Section entièrement comprimée (ψ=1)';
+      } else if(Mu>M2||Mu<M3){
+        const psi_num=0.3754*N0*h+Nu*(h/2-dp)-Mu;
+        const psi_den=(0.8571*h-dp)*N0;
+        const psi=psi_num/psi_den;
+        if(psi>=0.8095){
+          A2=(Nu-psi*N0)/fsu; A1=0;
+          cas=`SEC — ψ=${f3(psi)} ≥ 0.8095`;
+        } else {
+          // SPC=SPT — utiliser orga flexion simple
+          const a=d-h/2+e;
+          const Mua=Nu*a;
+          const mu_v=Mua/(b*d*d*fbu_v);
+          const al=alphaL(fe),mul_v=muL(fe);
+          const alpha_v=mu_v<mul_v?1-0.9366*Math.sqrt(Math.max(0,1-2*mu_v)):1.25*(1-Math.sqrt(Math.max(0,1-2*mul_v)));
+          const beta_v=mu_v<mul_v?(16*alpha_v-1)/15:0.8*alpha_v;
+          const A2_bar=beta_v*b*d*fbu_v/fsu;
+          A2=A2_bar; A1=A2_bar-Nu/fsu;
+          cas='SPC=SPT — Section partiellement comprimée';
+        }
+      } else {
+        A2=(Mu+(Nu-N0)*(d-h/2))/(fsu*(d-dp));
+        A1=(Nu-N0)/fsu-A2;
+        cas='Cas général';
+      }
+    }
+
+    A1=Math.max(0,A1); A2=Math.max(0,A2);
+    const A1_cm2=A1*1e4,A2_cm2=A2*1e4;
+
+    // As min
+    const Amin_set=b*h*ft28/fe*1e4;
+    const Amin_spc=0.23*ft28/fe*b*d*(e0-0.45*d)/(e0-0.185*d)*1e4;
+    const Amin_v=cas.includes('SET')?Amin_set:Math.max(0,Amin_spc);
+
+    document.getElementById('resC').innerHTML=`
+    <div class="mets">
+      <div class="met"><div class="ml">Nu (kN)</div><div class="mv">${gv('cNu')}</div></div>
+      <div class="met"><div class="ml">e0 = Mu/Nu (cm)</div><div class="mv">${f2(e0*100)}</div></div>
+      <div class="met"><div class="ml">ea (cm)</div><div class="mv">${f2(ea*100)}</div></div>
+      <div class="met"><div class="ml">e2 (cm)</div><div class="mv">${f2(e2*100)}</div></div>
+      <div class="met"><div class="ml">e total (cm)</div><div class="mv">${f2(e*100)}</div></div>
+      <div class="met hi"><div class="ml">A1 tendues</div><div class="mv">${f2(A1_cm2)}<span class="mu">cm²</span></div></div>
+      <div class="met hi"><div class="ml">A2 comprimées</div><div class="mv">${f2(A2_cm2)}<span class="mu">cm²</span></div></div>
+    </div>
+    <div class="card mb1">
+      <div class="ctitle"><span class="cdot"></span>Flexion composée — Organigramme BAEL</div>
+      <div class="rr"><span class="rl">Nu ≥ 0 (compression)</span><span class="rv"><span class="badge ${Nu>=0?'bok':'bwrn'}">${Nu>=0?'Oui — compression':'Non — traction'}</span></span></div>
+      <div class="rr"><span class="rl">lf = k·l0</span><span class="rv">${f2(lf)} m</span></div>
+      <div class="rr"><span class="rl">λ = lf/i</span><span class="rv">${f2(lbd)} ${lbd>70?'<span class="badge bnok">λ>70 NON</span>':lbd>50?'<span class="badge bwrn">50<λ≤70</span>':'<span class="badge bok">λ≤50 OK</span>'}</span></div>
+      <div class="rr"><span class="rl">N0 = b·h·fbu</span><span class="rv">${f2(N0*1e3)} kN</span></div>
+      <div class="rr"><span class="rl">e0 / ea / e2</span><span class="rv">${f2(e0*100)} / ${f2(ea*100)} / ${f2(e2*100)} cm</span></div>
+      <div class="rr"><span class="rl">Cas identifié</span><span class="rv"><span class="badge binf">${cas}</span></span></div>
+      <div class="rr"><span class="rl">A2 (côté comprimé)</span><span class="rv">${f2(A2_cm2)} cm²</span></div>
+      <div class="rr"><span class="rl">A1 (côté tendu)</span><span class="rv">${f2(A1_cm2)} cm²</span></div>
+      <div class="rr"><span class="rl">As min</span><span class="rv">${f2(Amin_v)} cm²</span></div>
+    </div>`;
+  }catch(e){document.getElementById('resC').innerHTML=`<div class="alrt warn">Erreur: ${e.message}</div>`;}
+}
+
+/* ═══ POTEAU ═══ */
+let pShape='rect';
+function pSS(v){pShape=v;document.querySelectorAll('.zo[data-ps]').forEach(e=>e.classList.toggle('sel',e.dataset.ps===v));
+  document.getElementById('pRectDims').style.display=v==='rect'?'grid':'none';
+  document.getElementById('pCircDims').style.display=v==='circ'?'grid':'none';calcP();}
+
+function calcP(){
+  try{
+    const fe=gsel('pfe'),fc28=gsel('pfc'),l0=gv('pl0'),k=gsel('pk');
+    const G=gv('pG'),Q=gv('pQ');
+    const Nu=(1.35*G+1.5*Q)*1e-3; // MN
+    const corr=gsel('pcorr'),phil_min_mm=gv('pphil');
+
+    let a_dim,b_dim,B,Br,u,Ix,Iy;
+    if(pShape==='rect'){
+      a_dim=gv('pa'); b_dim=gv('pbb');
+      B=a_dim*b_dim;
+      Br=(a_dim-0.02)*(b_dim-0.02);
+      u=2*(a_dim+b_dim);
+      Ix=a_dim*b_dim*b_dim*b_dim/12;
+      Iy=b_dim*a_dim*a_dim*a_dim/12;
+    } else {
+      const dia=gv('pd');
+      B=Math.PI*dia*dia/4;
+      Br=Math.PI*(dia-0.02)*(dia-0.02)/4;
+      u=Math.PI*dia;
+      Ix=Math.PI*dia**4/64;
+      Iy=Ix;
+      a_dim=dia; b_dim=dia;
+    }
+
+    const lx=k*l0,ly=k*l0;
+    const ix=Math.sqrt(Ix/B),iy=Math.sqrt(Iy/B);
+    const lbdx=lx/ix,lbdy=ly/iy;
+    const lbd=Math.max(lbdx,lbdy);
+    const lbd_ok=lbd<=70;
+
+    let alpha;
+    if(lbd<=50) alpha=0.85/(1+0.2*(lbd/35)*(lbd/35));
+    else alpha=0.6*(50/lbd)*(50/lbd);
+    alpha/=corr; // correction âge béton
+
+    // As = (Nu/α - Br·fc28/(0.9·γs))·γs/fe  [organigramme PDF p.11]
+    const As=(Nu/alpha - Br*fc28/(0.9*1.15))*1.15/fe;
+    const As_cm2=As*1e4;
+
+    // Amin = max(4u ; 0.2%B)  — [PDF p.11]
+    // BAEL p.11 : Amin = max(4u ; 0.2%00b7B) — u en m00e8tres 2192 4u donne cm00b2 directement
+    const Amin_cm2=Math.max(4*u, 0.002*B*1e4);
+    const Amax_cm2=0.05*B*1e4;
+    let As_fin_cm2=As_cm2;
+    if(As_cm2<Amin_cm2) As_fin_cm2=Amin_cm2;
+    const need_redim=As_cm2>Amax_cm2;
+
+    // Øt poteau : Øl_max/3 ≤ Øt ≤ 12mm [PDF p.13]
+    const phit_max=Math.min(phil_min_mm/3, 12);
+    // St courant : min(15Øl_min si As>Amin, 40cm, a+10cm) [PDF p.13]
+    const a_min=Math.min(a_dim,b_dim)*100; // cm
+    const St_max=Math.min(15*phil_min_mm/10, 40, a_min+10); // cm
+    // Ls, Lr [PDF p.13]
+    const psi_s=1.5; // HA
+    const ft28=0.6+0.06*fc28;
+    const tau_su=0.6*psi_s*psi_s*ft28;
+    const Ls=phil_min_mm/10/(4*tau_su)*fe; // cm : Ø(cm)·fe/(4·τsu)
+    const Lr=0.6*Ls;
+    const St_recouv=(Lr-4*phit_max/10)/2; // cm
+
+    document.getElementById('resP').innerHTML=`
+    <div class="mets">
+      <div class="met"><div class="ml">Nu (kN)</div><div class="mv">${f2(Nu*1e3)}</div></div>
+      <div class="met"><div class="ml">λ = lf/i</div><div class="mv">${f2(lbd)}</div></div>
+      <div class="met"><div class="ml">α flambement</div><div class="mv">${f3(alpha)}</div></div>
+      <div class="met"><div class="ml">As calculée</div><div class="mv">${f2(As_cm2)}<span class="mu">cm²</span></div></div>
+      <div class="met"><div class="ml">As min</div><div class="mv">${f2(Amin_cm2)}<span class="mu">cm²</span></div></div>
+      <div class="met hi"><div class="ml">As finale</div><div class="mv">${f2(As_fin_cm2)}<span class="mu">cm²</span></div></div>
+    </div>
+    <div class="gc2">
+      <div class="card mb1">
+        <div class="ctitle"><span class="cdot"></span>Organigramme poteau BAEL</div>
+        ${!lbd_ok?'<div class="alrt warn">λ > 70 — Redimensionner la section !</div>':''}
+        ${need_redim?'<div class="alrt warn">As > 5%B — Redimensionner la section !</div>':''}
+        <div class="rr"><span class="rl">Nu = 1.35G+1.5Q</span><span class="rv">${f2(Nu*1e3)} kN</span></div>
+        <div class="rr"><span class="rl">B = ${pShape==='rect'?'a·b':'π·d²/4'}</span><span class="rv">${f2(B*1e4)} cm²</span></div>
+        <div class="rr"><span class="rl">Br = ${pShape==='rect'?'(a-2cm)(b-2cm)':'π(d-2cm)²/4'}</span><span class="rv">${f2(Br*1e4)} cm²</span></div>
+        <div class="rr"><span class="rl">lf = k·l0</span><span class="rv">${f2(Math.max(lx,ly))} m</span></div>
+        <div class="rr"><span class="rl">ix / iy</span><span class="rv">${f3(ix*100)} / ${f3(iy*100)} cm</span></div>
+        <div class="rr"><span class="rl">λ = max(λx,λy) ≤ 70</span><span class="rv">${f2(lbd)} <span class="badge ${lbd_ok?'bok':'bnok'}">${lbd_ok?'OK':'NON'}</span></span></div>
+        <div class="rr"><span class="rl">λ ≤ 50 → α = 0.85/(1+0.2(λ/35)²)<br>λ > 50 → α = 0.6(50/λ)²</span><span class="rv">${f3(alpha*corr)} / ${corr} = ${f3(alpha)}</span></div>
+        <div class="rr"><span class="rl">As = (Nu/α − Br·fc28/(0.9γs))·γs/fe</span><span class="rv">${f2(As_cm2)} cm²</span></div>
+        <div class="rr"><span class="rl">Amin = max(4u ; 0.2%B)</span><span class="rv">${f2(Amin_cm2)} cm² <span class="badge ${As_fin_cm2>=Amin_cm2?'bok':'bnok'}">${As_fin_cm2>=Amin_cm2?'OK':'Pris=Amin'}</span></span></div>
+        <div class="rr"><span class="rl">Amax = 5%·B</span><span class="rv">${f2(Amax_cm2)} cm² <span class="badge ${!need_redim?'bok':'bnok'}">${!need_redim?'OK':'Redim!'}</span></span></div>
+      </div>
+      <div class="card mb1">
+        <div class="ctitle"><span class="cdot"></span>Exécution — Organigramme p.13</div>
+        <div class="rr"><span class="rl">Øt ≤ min(Øl_max/3 ; 12 mm)</span><span class="rv">≤ ${f2(phit_max)} mm</span></div>
+        <div class="rr"><span class="rl">τsu = 0.6·ψs²·ft28</span><span class="rv">${f2(tau_su)} MPa</span></div>
+        <div class="rr"><span class="rl">Ls = Ø·fe/(4·τsu)</span><span class="rv">${f2(Ls)} cm</span></div>
+        <div class="rr"><span class="rl">Lr = 0.6·Ls</span><span class="rv">${f2(Lr)} cm</span></div>
+        <div class="rr"><span class="rl">St zone courant ≤ min(15Øl_min ; 40cm ; a+10)</span><span class="rv">≤ ${f2(St_max)} cm</span></div>
+        <div class="rr"><span class="rl">St zone recouvrement = (Lr-4Øt)/2</span><span class="rv">${f2(St_recouv)} cm</span></div>
+        <div class="rr"><span class="rl">Écartement barres ≤ min(15Ø ; 40cm ; a+10cm)</span><span class="rv">≤ ${f2(St_max)} cm</span></div>
+      </div>
+    </div>
+    <div class="recap">
+      <div class="ctitle"><span class="cdot"></span>Récapitulatif poteau</div>
+      <div class="rgrid">
+        <div><div class="rib">As longitudinales</div><div class="rv2">${f2(As_fin_cm2)} cm²</div><div class="rs">min 4 barres — répartition symétrique</div></div>
+        <div><div class="rib">Øt max</div><div class="rv2">${f2(phit_max)} mm</div></div>
+        <div><div class="rib">St courant max</div><div class="rv2">${f2(St_max)} cm</div></div>
+        <div><div class="rib">Ls scellement</div><div class="rv2">${f2(Ls)} cm</div></div>
+      </div>
+      <div class="rbs">
+        <span class="badge ${lbd_ok?'bok':'bnok'}">λ=${f2(lbd)} ${lbd_ok?'OK':'NON'}</span>
+        <span class="badge ${!need_redim?'bok':'bnok'}">As ${!need_redim?'OK':'Redim.'}</span>
+      </div>
+    </div>`;
+  }catch(e){document.getElementById('resP').innerHTML=`<div class="alrt warn">Erreur: ${e.message}</div>`;}
+}
+
+/* ═══ DALLE ═══ */
+let dFiss=1;
+function dSF(v){dFiss=v;document.querySelectorAll('.fo[data-dv]').forEach(e=>e.classList.toggle('sel',+e.dataset.dv===v));calcD();}
+
+function calcD(){
+  try{
+    const h=gv('dah'),d=gv('dad'),Lx=gv('daLx'),Ly=gv('daLy');
+    const fe=gsel('dafe'),fc28=gsel('dafc');
+    const g=gv('dag'),q=gv('daq');
+    const dtype=document.getElementById('datype').value;
+    const cont=document.getElementById('dacont').value;
+
+    const qu=1.35*g+1.5*q,qs=g+q;
+    const ft28=0.6+0.06*fc28,fsu=fe/1.15;
+    const fbu_v=fbu(fc28,1.0);
+    const al=alphaL(fe),mul_v=muL(fe);
+
+    const alpha_ratio=Lx/Ly;
+    let is2way=false;
+    if(dtype==='auto') is2way=alpha_ratio>=0.4;
+    else if(dtype==='2way') is2way=true;
+
+    // Épaisseur min recommandée
+    const h_min=is2way?(cont==='cont'?Lx/40:Lx/30):(cont==='cont'?Lx/25:Lx/20);
+
+    // Moments isostatiques — coefficients µx µy (tableau BAEL approx.)
+    let mux,muy;
+    if(!is2way){
+      mux=1/8; muy=0;
+    } else {
+      // µx et µy approchés (table standard)
+      const r=alpha_ratio;
+      mux=r*r*r*r/(1+r*r*r*r)*0.125+0.375*(1-r*r*r*r/(1+r*r*r*r))*0.125;
+      // formule approchée plus exacte :
+      mux=(1+0.4*r*r)/(8*(1+r*r*r*r))*r*r; // simplification
+      mux=Math.min(0.125, Math.max(0.03, mux));
+      muy=alpha_ratio*mux; // µy·M0x = M0y
+    }
+
+    const M0x=mux*qu*Lx*Lx; // kN·m/m
+    const M0y=is2way?muy*M0x:0;
+
+    // Moments en travée et en appui
+    const Mtx=cont==='cont'?(is2way?0.75*M0x:0.85*M0x):M0x;
+    const Mty=cont==='cont'?(is2way?0.75*M0y:0.85*M0y):M0y;
+    const Max_appui=0.5*M0x; // moment en appui intermédiaire
+
+    // Calcul As selon orga flexion simple (b=1m)
+    function asFromM(M_kNm_m){
+      const Mv=M_kNm_m*1e-3; // MN·m/m
+      if(Mv<=0) return 0;
+      const mu_v=Mv/(1.0*d*d*fbu_v);
+      if(mu_v>5/3*mul_v) return -1; // redim
+      if(mu_v<mul_v){
+        const alpha_v=1-0.9366*Math.sqrt(Math.max(0,1-2*mu_v));
+        const beta_v=(16*alpha_v-1)/15;
+        return beta_v*1.0*d*fbu_v/fsu*1e4;
+      }
+      const alpha_v=1.25*(1-Math.sqrt(Math.max(0,1-2*mul_v)));
+      const beta_v=0.8*alpha_v;
+      return beta_v*1.0*d*fbu_v/fsu*1e4;
+    }
+
+    const Ax_cm2=Math.max(0,asFromM(Mtx));
+    const Ay_cm2=Math.max(0,asFromM(Mty));
+
+    // As min [organigramme PDF p.30]
+    // Ay_min : 12h RL / 8h HA400 / 6h HA500
+    const Ay_min=fe===235?12*h*1e4:fe===400?8*h*1e4:6*h*1e4;
+    const Ax_min=(3-alpha_ratio)/2*Ay_min;
+
+    const Ax_fin=Math.max(Ax_cm2,Ax_min);
+    const Ay_fin=Math.max(Ay_cm2,Ay_min);
+
+    // Espacement max [PDF p.30]
+    let Stx_max,Sty_max;
+    if(dFiss===1){Stx_max=Math.min(3*h*100,33);Sty_max=Math.min(4*h*100,45);}
+    else{Stx_max=Math.min(2*h*100,25);Sty_max=Math.min(3*h*100,33);}
+
+    // Effort tranchant dalle [PDF p.30]
+    let Vux,Vuy;
+    if(!is2way){Vux=qu*Lx/2;Vuy=0;}
+    else{Vux=qu*Lx*Ly/(Lx+2*Ly);Vuy=qu*Lx/3;}
+    const tau_dalle=Vux/(d*1.0)*1e-3; // MPa : Vu[kN/m]/(d[m]×1m) = kN/m² × 1e-3 = MPa
+    const tau_dalle_adm=0.07*fc28/1.5;
+    const tau_d_ok=tau_dalle<=tau_dalle_adm;
+
+    document.getElementById('resD').innerHTML=`
+    <div class="mets">
+      <div class="met"><div class="ml">α = Lx/Ly</div><div class="mv">${f3(alpha_ratio)}</div></div>
+      <div class="met"><div class="ml">Type</div><div class="mv" style="font-size:11px">${is2way?'2 sens':'1 sens'}</div></div>
+      <div class="met"><div class="ml">h min (m)</div><div class="mv">${f3(h_min)}</div></div>
+      <div class="met"><div class="ml">M0x (kN·m/m)</div><div class="mv">${f2(M0x)}</div></div>
+      <div class="met"><div class="ml">As,x</div><div class="mv">${f2(Ax_fin)}<span class="mu">cm²/m</span></div></div>
+      <div class="met hi"><div class="ml">As,y</div><div class="mv">${f2(Ay_fin)}<span class="mu">cm²/m</span></div></div>
+    </div>
+    <div class="gc2">
+      <div class="card mb1">
+        <div class="ctitle"><span class="cdot"></span>Détermination des moments — PDF p.29</div>
+        <div class="rr"><span class="rl">α = Lx/Ly</span><span class="rv">${f3(alpha_ratio)} → <span class="badge binf">${is2way?'Dalle 2 sens (α≥0.4)':'Dalle 1 sens (α<0.4)'}</span></span></div>
+        <div class="rr"><span class="rl">h min recommandée</span><span class="rv">${f3(h_min)} m ${h>=h_min?'<span class="badge bok">OK</span>':'<span class="badge bnok">h insuf.</span>'}</span></div>
+        <div class="rr"><span class="rl">qu = 1.35g+1.5q</span><span class="rv">${f2(qu)} kN/m²</span></div>
+        <div class="rr"><span class="rl">µx (coeff. table)</span><span class="rv">${f4(mux)}</span></div>
+        <div class="rr"><span class="rl">M0x = µx·qu·Lx²</span><span class="rv">${f2(M0x)} kN·m/m</span></div>
+        ${is2way?`<div class="rr"><span class="rl">M0y = µy·M0x</span><span class="rv">${f2(M0y)} kN·m/m</span></div>`:''}
+        <div class="rr"><span class="rl">Mtx (travée)</span><span class="rv">${f2(Mtx)} kN·m/m</span></div>
+        ${is2way?`<div class="rr"><span class="rl">Mty (travée)</span><span class="rv">${f2(Mty)} kN·m/m</span></div>`:''}
+        <div class="rr"><span class="rl">Moment en appui ≈ 0.5·M0x</span><span class="rv">${f2(Max_appui)} kN·m/m</span></div>
+      </div>
+      <div class="card mb1">
+        <div class="ctitle"><span class="cdot"></span>Armatures — Organigramme PDF p.30</div>
+        <div class="rr"><span class="rl">As,x calculé</span><span class="rv">${f2(Ax_cm2)} cm²/m</span></div>
+        <div class="rr"><span class="rl">As,y calculé</span><span class="rv">${f2(Ay_cm2)} cm²/m</span></div>
+        <div class="rr"><span class="rl">Ay_min (${fe===235?'12h':fe===400?'8h':'6h'})</span><span class="rv">${f2(Ay_min)} cm²/m</span></div>
+        <div class="rr"><span class="rl">Ax_min = (3-α)/2·Ay_min</span><span class="rv">${f2(Ax_min)} cm²/m</span></div>
+        <div class="rr"><span class="rl">As,x retenue</span><span class="rv">${f2(Ax_fin)} cm²/m</span></div>
+        <div class="rr"><span class="rl">As,y retenue</span><span class="rv">${f2(Ay_fin)} cm²/m</span></div>
+        <div class="rr"><span class="rl">Stx max (${dFiss===1?'FPP: min(3h,33cm)':'FP/FTP: min(2h,25cm)'})</span><span class="rv">${f2(Stx_max)} cm</span></div>
+        <div class="rr"><span class="rl">Sty max (${dFiss===1?'FPP: min(4h,45cm)':'FP/FTP: min(3h,33cm)'})</span><span class="rv">${f2(Sty_max)} cm</span></div>
+        <div class="rr"><span class="rl">τu = Vux/(d·b) [MPa]</span><span class="rv">${f3(tau_dalle)} / ${f2(tau_dalle_adm)} MPa <span class="badge ${tau_d_ok?'bok':'bnok'}">${tau_d_ok?'Pas de transv.':'Besoin transv.'}</span></span></div>
+        <div class="rr"><span class="rl">Arrêts travée : 1/2 barres à Lx/10 de l'appui</span><span class="rv">${f2(Lx/10*100)} cm</span></div>
+      </div>
+    </div>`;
+  }catch(e){document.getElementById('resD').innerHTML=`<div class="alrt warn">Erreur: ${e.message}</div>`;}
+}
+
+/* ═══ SEMELLE ═══ */
+let sFiss=1,sType='iso';
+function sSF(v){sFiss=v;document.querySelectorAll('.fo[data-sv]').forEach(e=>e.classList.toggle('sel',+e.dataset.sv===v));calcS();}
+function sST(v){sType=v;document.querySelectorAll('.zo[data-st]').forEach(e=>e.classList.toggle('sel',e.dataset.st===v));calcS();}
+
+function calcS(){
+  try{
+    const a=gv('sa'),b_pot=gv('sb'),fe=gsel('sfe'),fc28=gsel('sfc');
+    const G=gv('sG'),Q=gv('sQ'),sigma_sol=gv('ssig');
+    const phil_mm=gv('sphil');
+    const acier=document.getElementById('sacier').value;
+    const psi_s=acier==='HA'?1.5:1.0;
+
+    const pu=(1.35*G+1.5*Q); // kN
+    const pser=G+Q;           // kN
+    const qu=sigma_sol;       // kPa = kN/m²
+    const qser=(2/3)*qu;
+
+    const rho=25; // kN/m³
+    const fsu=fe/1.15;
+    const ft28=0.6+0.06*fc28;
+    const tau_su=0.6*psi_s*psi_s*ft28; // MPa
+
+    let B_sem,A_sem,d_sem,h_sem;
+    if(sType==='cont'){
+      // Semelle continue — A=1m
+      A_sem=1.0;
+      B_sem=Math.max(pu/qu, pser/qser)/1e3+A_sem*0.05*rho/qu; // approx avec PP
+      // On itère une fois avec PP
+      h_sem=Math.max(0.20,(B_sem-0.05)/4);
+      const PP=rho*B_sem*A_sem*h_sem;
+      B_sem=Math.max((pu+1.35*PP)/qu,(pser+PP)/qser)/1e3;
+      d_sem=Math.max((B_sem-b_pot)/4, 0.15);
+      h_sem=d_sem+0.05;
+    } else {
+      // Semelle isolée — A/B = a/b
+      const p_sur_q=Math.max(pu/qu,pser/qser);
+      B_sem=Math.sqrt(p_sur_q*b_pot/a/1e3);
+      A_sem=Math.sqrt(p_sur_q*a/b_pot/1e3);
+      h_sem=Math.max(0.20, Math.max((A_sem-a)/4,(B_sem-b_pot)/4));
+      h_sem=Math.min(h_sem,Math.min(A_sem-a,B_sem-b_pot));
+      // Ajouter PP et ré-itérer
+      const PP=rho*B_sem*A_sem*h_sem;
+      const p2=Math.max((pu+1.35*PP)/qu,(pser+PP)/qser);
+      B_sem=Math.sqrt(p2*b_pot/a/1e3); A_sem=Math.sqrt(p2*a/b_pot/1e3);
+      d_sem=Math.max((B_sem-b_pot)/4,(A_sem-a)/4);
+      d_sem=Math.min(d_sem,Math.min(A_sem-a,B_sem-b_pot));
+      h_sem=d_sem+0.05;
+    }
+
+    // Armatures [organigramme PDF p.32]
+    let AsB,AsA;
+    if(sType==='cont'){
+      AsB=pu*(B_sem-b_pot)/(8*d_sem*fsu)*1e-3*1e4; // cm²/m (Vu en kN/m)
+    } else {
+      AsB=pu*(B_sem-b_pot)/(8*d_sem*fsu*1e-3)*1e-4*1e4; // cm²
+      // pu en kN, B en m, d en m, fsu en MPa → As en m² → *1e4 = cm²
+      AsB=pu*(B_sem-b_pot)/(8*d_sem*(fsu*1e3))*1e4; // cm²
+      AsA=pu*(A_sem-a)/(8*d_sem*(fsu*1e3))*1e4;
+    }
+
+    // Correction fissuration [PDF p.32]
+    const coeff_fiss=[1,1,1.1,1.5][sFiss];
+    if(sType==='iso'){AsB*=coeff_fiss;AsA*=coeff_fiss;}
+    else{AsB*=coeff_fiss;}
+
+    // Longueur de scellement [PDF p.32]
+    const Ls_cm=phil_mm/10*fe/(4*tau_su); // cm
+    const Lr_cm=0.6*Ls_cm;
+    // Vérification crochets
+    const need_crochet_B=Ls_cm>=B_sem*100/4;
+    const need_crochet_A=sType==='iso'?(Ls_cm>=A_sem*100/4):false;
+
+    // Poinçonnement [PDF p.37]
+    const a1=a+h_sem,b1=b_pot+h_sem,a2=a+2*h_sem,b2=b_pot+2*h_sem;
+    const uc=2*(a1+b1);
+    const G0=rho*B_sem*(sType==='iso'?A_sem:1.0)*h_sem;
+    const Pu_poinc=pu+1.35*G0;
+    const Vu_p=Pu_poinc*(1-(a2*b2/(B_sem*(sType==='iso'?A_sem:1.0))))*1e-3;
+    const Vu_p_adm=0.045*uc*h_sem*fc28/1.5*1e3;
+    const poinc_ok=Vu_p<=Vu_p_adm;
+
+    document.getElementById('resS').innerHTML=`
+    <div class="mets">
+      <div class="met"><div class="ml">pu (kN)</div><div class="mv">${f2(pu)}</div></div>
+      <div class="met"><div class="ml">B semelle (m)</div><div class="mv">${f3(B_sem)}</div></div>
+      ${sType==='iso'?`<div class="met"><div class="ml">A semelle (m)</div><div class="mv">${f3(A_sem)}</div></div>`:''}
+      <div class="met"><div class="ml">d (m)</div><div class="mv">${f3(d_sem)}</div></div>
+      <div class="met"><div class="ml">h = d+5cm (m)</div><div class="mv">${f3(h_sem)}</div></div>
+      <div class="met hi"><div class="ml">As,B</div><div class="mv">${f2(AsB)}<span class="mu">cm²</span></div></div>
+      ${sType==='iso'?`<div class="met hi"><div class="ml">As,A</div><div class="mv">${f2(AsA)}<span class="mu">cm²</span></div></div>`:''}
+    </div>
+    <div class="gc2">
+      <div class="card mb1">
+        <div class="ctitle"><span class="cdot"></span>Organigramme semelle — BAEL p.32</div>
+        <div class="rr"><span class="rl">qu = σsol</span><span class="rv">${f2(qu)} kPa</span></div>
+        <div class="rr"><span class="rl">qser = 2/3·qu</span><span class="rv">${f2(qser)} kPa</span></div>
+        <div class="rr"><span class="rl">p/q = sup(pu/qu ; pser/qser)</span><span class="rv">${f3(Math.max(pu/qu,pser/qser))} m²</span></div>
+        <div class="rr"><span class="rl">B semelle</span><span class="rv">${f3(B_sem)} m</span></div>
+        ${sType==='iso'?`<div class="rr"><span class="rl">A semelle</span><span class="rv">${f3(A_sem)} m</span></div>`:''}
+        <div class="rr"><span class="rl">d ≥ max((A-a)/4,(B-b)/4)</span><span class="rv">${f3(d_sem)} m</span></div>
+        <div class="rr"><span class="rl">h = d + 0.05</span><span class="rv">${f3(h_sem)} m</span></div>
+        <div class="rr"><span class="rl">AsB = pu(B-b)/(8d·fsu)</span><span class="rv">${f2(AsB/coeff_fiss)} × ${coeff_fiss} = ${f2(AsB)} cm²</span></div>
+        ${sType==='iso'?`<div class="rr"><span class="rl">AsA = pu(A-a)/(8d·fsu)</span><span class="rv">${f2(AsA/coeff_fiss)} × ${coeff_fiss} = ${f2(AsA)} cm²</span></div>`:''}
+        <div class="rr"><span class="rl">Fissuration → coeff.</span><span class="rv"><span class="badge binf">${['','FPP → ×1','FP → ×1.1','FTP → ×1.5'][sFiss]}</span></span></div>
+      </div>
+      <div class="card mb1">
+        <div class="ctitle"><span class="cdot"></span>Scellement & poinçonnement</div>
+        <div class="rr"><span class="rl">τsu = 0.6·ψs²·ft28</span><span class="rv">${f2(tau_su)} MPa</span></div>
+        <div class="rr"><span class="rl">Ls = Ø·fe/(4·τsu)</span><span class="rv">${f2(Ls_cm)} cm</span></div>
+        <div class="rr"><span class="rl">Lr = 0.6·Ls</span><span class="rv">${f2(Lr_cm)} cm</span></div>
+        <div class="rr"><span class="rl">Crochets côté B (Ls ≥ B/4 ?)</span><span class="rv"><span class="badge ${need_crochet_B?'bwrn':'bok'}">${need_crochet_B?'Crochets nécessaires':'Pas de crochets'}</span></span></div>
+        ${sType==='iso'?`<div class="rr"><span class="rl">Crochets côté A (Ls ≥ A/4 ?)</span><span class="rv"><span class="badge ${need_crochet_A?'bwrn':'bok'}">${need_crochet_A?'Crochets nécessaires':'Pas de crochets'}</span></span></div>`:''}
+        <div class="rr"><span class="rl">uc = 2(a1+b1)</span><span class="rv">${f2(uc*100)} cm</span></div>
+        <div class="rr"><span class="rl">Vu' poinçonnement</span><span class="rv">${f2(Vu_p)} kN</span></div>
+        <div class="rr"><span class="rl">Vu' adm = 0.045·uc·h·fc28/γb</span><span class="rv">${f2(Vu_p_adm)} kN <span class="badge ${poinc_ok?'bok':'bnok'}">${poinc_ok?'OK':'Redim!'}</span></span></div>
+      </div>
+    </div>`;
+  }catch(e){document.getElementById('resS').innerHTML=`<div class="alrt warn">Erreur: ${e.message}</div>`;}
+}
+
+/* ─── INIT ─── */
+window.addEventListener('DOMContentLoaded',()=>{
+  calcR();calcT();calcC();calcP();calcD();calcS();
+});
+</script>
+</body>
+</html>
